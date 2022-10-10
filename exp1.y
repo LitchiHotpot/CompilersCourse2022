@@ -12,7 +12,6 @@ void yyerror(const char* s );
 %}
 
 %token NUMBER
-%token NAME
 %token ADD
 %token SUB
 %token MUL
@@ -30,11 +29,6 @@ void yyerror(const char* s );
 
 lines : lines expr ';' { printf("%f\n", $2); }
     | lines ';'
-    |
-    ;
-    
-stat:      NAME '=' expr     { $1->value=$3; }
-    |       expr             { printf("=%g\n",$1); }
     ;
 
 expr : expr ADD expr { $$ = $1 + $3; }
