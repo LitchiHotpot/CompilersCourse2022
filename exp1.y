@@ -17,8 +17,12 @@ void yyerror(const char* s );
 %token SUB
 %token MUL
 %token DIV
+%token LPARN
+%token RPARN
 %left ADD SUB
 %left MUL DIV
+%left LPARN
+%right RPARN
 %right UMINUS
 
 %%
@@ -37,7 +41,7 @@ expr : expr ADD expr { $$ = $1 + $3; }
     | expr SUB expr { $$ = $1 - $3; }
     | expr MUL expr { $$ = $1 * $3; }
     | expr DIV expr {if ($3==0.0) yyerror("divided by zero!\n") else { $$ = $1 / $3; }}
-    | '('expr')' { $$ = $2; }
+    | LPARN expr RPARN { $$ = $2; }
     |SUB expr %prec UMINUS { $$ = -$2; }
     | NUMBER
     ;
@@ -71,6 +75,10 @@ int yylex()
         return MUL;
     else if(t=='/')
         return DIV;
+    else if(t=='(')
+        return LPARN;
+    else if(t==')')
+        return RPARN;
     else
     	return t;
     }
