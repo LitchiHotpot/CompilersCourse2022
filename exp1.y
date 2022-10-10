@@ -34,7 +34,7 @@ lines : lines expr ';' { printf("%f\n", $2); }
 expr : expr ADD expr { $$ = $1 + $3; }
     | expr SUB expr { $$ = $1 - $3; }
     | expr MUL expr { $$ = $1 * $3; }
-    | expr DIV expr {if ($3==0.0) yyerror("divided by zero!\n") else { $$ = $1 / $3; }}
+    | expr DIV expr {if ($3==0.0) yyerror("divided by zero!\n"); else { $$ = $1 / $3; }}
     | LPARN expr RPARN { $$ = $2; }
     |SUB expr %prec UMINUS { $$ = -$2; }
     | NUMBER
