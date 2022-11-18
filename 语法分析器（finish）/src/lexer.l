@@ -18,17 +18,31 @@
     }
 %}
 
-LINECOMMENT \/\/[^\n]*
+HEXADECIMAL 0[xX][0-9a-fA-F]+
+OCTAL 0[0-7]+
+LINECOMMENT \/\/[^(\r\n|\n|\r)]*
 BLOCKCOMMENT ("/*"([^\*]|(\*)*[^\*/])*(\*)*"*/")
 DECIMIAL ([1-9][0-9]*|0)
 ID [[:alpha:]_][[:alpha:][:digit:]_]*
+
 EOL (\r\n|\n|\r)
 WHITE [\t ]
 %x BLOCKCOMMENT
 
 %%
-{LINECOMMENT}
-{BLOCKCOMMENT}
+
+{LINECOMMENT} yylineno--;
+{BLOCKCOMMENT} yylineno--;
+"while" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4("WHILE\twhile");
+    return WHILE;
+}
+"const" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4("CONST\tconst");
+    return CONST;
+}
 "int" {
     /*
     * Questions: 
@@ -43,11 +57,6 @@ WHITE [\t ]
     if(dump_tokens)
         DEBUG_FOR_LAB4("VOID\tvoid");
     return VOID;
-}
-"const" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("CONST\tconst");
-    return CONST;
 }
 "if" {
     if(dump_tokens)
@@ -64,6 +73,7 @@ WHITE [\t ]
         DEBUG_FOR_LAB4("RETURN\treturn");
     return RETURN;
 }
+
 "&&" {
     if(dump_tokens)
         DEBUG_FOR_LAB4("AND\t=");
@@ -104,6 +114,11 @@ WHITE [\t ]
     if(dump_tokens)
         DEBUG_FOR_LAB4("ASSIGN\t=");
     return ASSIGN;
+}
+"%" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4("MOD\t=");
+    return MOD;
 }
 "<" {
     if(dump_tokens)
@@ -165,7 +180,22 @@ WHITE [\t ]
         DEBUG_FOR_LAB4("RBRACE\t}");
     return RBRACE;
 }
-
+{HEXADECIMAL} {
+     int temp;
+    sscanf(yytext, "%x", &temp);
+    if(dump_tokens)
+        DEBUG_FOR_LAB4(string("NUMBER\t") + to_string(temp));
+    yylval.itype = temp;
+    return INTEGER;
+}
+{OCTAL} {
+    int temp;
+    sscanf(yytext, "%o", &temp);
+    if(dump_tokens)
+        DEBUG_FOR_LAB4(string("NUMBER\t") + to_string(temp));
+    yylval.itype = temp;
+    return INTEGER;
+}
 {DECIMIAL} {
     if(dump_tokens)
         DEBUG_FOR_LAB4(yytext);

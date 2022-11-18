@@ -1,0 +1,38 @@
+//test global var define
+const int h=0,g=8;
+int func(int a,int x)
+{
+	return 0;
+}
+int main()
+{
+    int l=0;
+    int i0 = 0, i1 = 1, i2 = 2, i3 = 3, i4 = 4;
+    while (i0 && i1) putch(32);
+    if (i0 || i1) putch(67);
+    if (i0 >= i1 || i1 <= i0) putch(72);
+    if (i2 >= i1 && i4 != i3) { putch(73); }
+    if (i0 == !i1 && i3 < i3 || i4 >= i4) { putch(74); }
+    if (i0 == !i1 || i3 < i3 && i4 >= i4) putch(75);
+    
+    
+    
+    
+    int a=0,b=3;
+    a = 2; b = 3;
+    func(a+1,b+1);
+    a+1;
+    ;
+    b = 0x80000000+1;
+    b=017;
+    a=(1+2)*-3/!4;
+    a=2%5;
+    int d=func(a,b);
+    int c=getint();
+    if(func(a,b)){
+        return func(0,b);
+    }
+    else{
+    	return 0+1+2+3;
+    }
+}

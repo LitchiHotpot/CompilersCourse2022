@@ -21,9 +21,8 @@ public:
     bool isTemporary() const {return kind == TEMPORARY;};
     bool isVariable() const {return kind == VARIABLE;};
     Type* getType() {return type;};
+    void setType(Type *type) {this->type=type;};
     virtual std::string toStr() = 0;
-    int getValue() const;
-    void setValue(int);
     // You can add any function you need here.
 };
 
@@ -44,7 +43,6 @@ public:
     ConstantSymbolEntry(Type *type, int value);
     virtual ~ConstantSymbolEntry() {};
     int getValue() const {return value;};
-    void setValue(int newint){value=newint;};
     std::string toStr();
     // You can add any function you need here.
 };
@@ -123,6 +121,7 @@ class SymbolTable
 {
 private:
     std::map<std::string, SymbolEntry*> symbolTable;
+ //   std::map<std::string, SymbolEntry*>::iterator iter;
     SymbolTable *prev;
     int level;
     static int counter;
@@ -135,34 +134,6 @@ public:
     int getLevel() {return level;};
     static int getLabel() {return counter++;};
 };
-
-class EntryNode{
-private:
-    SymbolEntry *se;
-public:
-    EntryNode *next;
-    EntryNode(SymbolEntry *id){next=nullptr; se=id;};
-    SymbolEntry* getEntry(){return se;};
-};
-
-class EntryList{
-private:
-    EntryNode *head;
-    int num;
-public:
-    EntryList(){};
-    EntryList(EntryNode *beg){head=beg;num++;};
-    void sethead(EntryNode *beg){head=beg;};
-    void putnew(EntryNode *newNode){
-        EntryNode *p=head;
-        while(p->next!=nullptr) p=p->next;
-        p->next=newNode;
-        num++;
-    }
-    EntryNode* getNode(){return head;};
-};
-
-
 
 extern SymbolTable *identifiers;
 extern SymbolTable *globals;
