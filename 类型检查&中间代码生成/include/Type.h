@@ -8,7 +8,7 @@ class Type
 private:
     int kind;
 protected:
-    enum {INT, VOID, FUNC, PTR};
+    enum {INT, VOID, FUNC, CONSTINT,PTR};
 public:
     Type(int kind) : kind(kind) {};
     virtual ~Type() {};
@@ -16,6 +16,7 @@ public:
     bool isInt() const {return kind == INT;};
     bool isVoid() const {return kind == VOID;};
     bool isFunc() const {return kind == FUNC;};
+    bool isConstInt() const {return kind == CONSTINT;};
 };
 
 class IntType : public Type
@@ -31,6 +32,15 @@ class VoidType : public Type
 {
 public:
     VoidType() : Type(Type::VOID){};
+    std::string toStr();
+};
+
+class ConstIntType : public Type
+{
+private:
+    int size;
+public:
+    ConstIntType(int size) : Type(Type::CONSTINT),size(size){};
     std::string toStr();
 };
 
@@ -61,10 +71,12 @@ private:
     static IntType commonInt;
     static IntType commonBool;
     static VoidType commonVoid;
+    static ConstIntType commonConstInt;
 public:
     static Type *intType;
     static Type *voidType;
     static Type *boolType;
+    static Type *constintType;
 };
 
 #endif

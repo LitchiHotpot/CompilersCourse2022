@@ -47,6 +47,9 @@ $(BINARY):$(OBJ)
 
 app:$(LEXER) $(PARSER) $(BINARY)
 
+runast:app
+	@$(BINARY) -o example.ast -a example.sy
+	
 run:app
 	@$(BINARY) -o example.ll -i example.sy
 
