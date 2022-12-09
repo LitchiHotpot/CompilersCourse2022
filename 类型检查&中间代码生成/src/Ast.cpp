@@ -75,6 +75,7 @@ void BinaryExpr::genCode()
     else if(op == OR)
     {
         // Todo
+        //test
     }
     else if(op >= LESS && op <= MORE)
     {
