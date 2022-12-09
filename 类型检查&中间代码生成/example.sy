@@ -1,10 +1,14 @@
 int main()
 {
-    int a;
+    int a=getint();
+    putint(a);
     int b;
     int min;
-    a = 1 + 2 + 3;
-    b = 2 + 3 + 4;
+    void f(){
+	   
+    };
+    a = 1 + 2 + main();
+    b = 2 + 3 + f();
     if (a < b)
         min = a;
     else

@@ -396,11 +396,14 @@ ExprStmt
 FuncExpr
     :
     ID LPAREN ParaIDList RPAREN {
-        Type *funcType;
-        funcType = new FunctionType(TypeSystem::voidType,{});
-        SymbolEntry *se = new IdentifierSymbolEntry(funcType, $1, identifiers->getLevel());
-        identifiers->install($1, se);
-        identifiers = new SymbolTable(identifiers);
+        SymbolEntry *se;
+        se = identifiers->lookup($1);
+        if(se == nullptr)
+        {
+            fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+            delete [](char*)$1;
+            assert(se != nullptr);
+        }
     	$$ = new FuncExpr(se, $3);
         delete []$1;   
     }
@@ -408,19 +411,26 @@ FuncExpr
     
 FuncDef
     :
-    Type ID {
+    Type ID LPAREN ParaList RPAREN {
         Type *funcType;
-        funcType = new FunctionType($1,{});
+        std::vector<Type*> paramsType;
+        std::queue<SymbolEntry*> idList = $4->getList();
+        while(!idList.empty()){
+            SymbolEntry *se0=idList.front();
+            Type *t=se0->getType();
+            paramsType.emplace_back(t);
+            idList.pop();
+        }
+        funcType = new FunctionType($1,paramsType);
         SymbolEntry *se = new IdentifierSymbolEntry(funcType, $2, identifiers->getLevel());
         identifiers->install($2, se);
         identifiers = new SymbolTable(identifiers);
     }
-    LPAREN ParaList RPAREN 
     BlockStmt
     {   
         SymbolEntry *se;
         se = identifiers->lookup($2);
-        $$ = new FunctionDef(se, $5, $7);
+        $$ = new FunctionDef(se, $4, $7);
         SymbolTable *top = identifiers;
         identifiers = identifiers->getPrev();
         delete top;

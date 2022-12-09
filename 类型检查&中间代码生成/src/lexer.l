@@ -202,7 +202,39 @@ WHITE [\t ]
     yylval.itype = atoi(yytext);
     return INTEGER;
 }
-
+"putint" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4(yytext);
+    char *lexeme;
+    lexeme = new char[strlen(yytext) + 1];
+    strcpy(lexeme, yytext);
+    yylval.strtype = lexeme;
+    std::vector<Type*> t;
+    t.emplace_back(TypeSystem::intType);
+    Type* funcType = new FunctionType(TypeSystem::voidType, t);
+    SymbolTable* st = identifiers;
+    while(st->getPrev())
+        st = st->getPrev();
+    SymbolEntry* se = new IdentifierSymbolEntry(funcType, yytext, st->getLevel());
+    st->install(yytext, se);
+    return ID;
+}
+"getint" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4(yytext);
+    char *lexeme;
+    lexeme = new char[strlen(yytext) + 1];
+    strcpy(lexeme, yytext);
+    yylval.strtype = lexeme;
+    std::vector<Type*> t;
+    Type* funcType = new FunctionType(TypeSystem::intType, t);
+    SymbolTable* st = identifiers;
+    while(st->getPrev())
+        st = st->getPrev();
+    SymbolEntry* se = new IdentifierSymbolEntry(funcType, yytext, st->getLevel());
+    st->install(yytext, se);
+    return ID;
+}
 {ID} {
     if(dump_tokens)
         DEBUG_FOR_LAB4(yytext);

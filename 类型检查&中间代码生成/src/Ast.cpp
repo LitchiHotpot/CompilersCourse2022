@@ -197,18 +197,38 @@ void AssignStmt::genCode()
 
 void Ast::typeCheck()
 {
-    if(root != nullptr)
+    //fprintf(yyout,"1111");
+    if(root != nullptr){
         root->typeCheck();
+    }
+        
 }
 
 void FunctionDef::typeCheck()
 {
-    // Todo
+    if(stmt!=nullptr)
+        stmt->typeCheck();
+}
+
+void SeqNode::typeCheck()
+{
+    if(stmt1!=nullptr)
+        stmt1->typeCheck();
+    if(stmt2!=nullptr)
+        stmt2->typeCheck();
 }
 
 void BinaryExpr::typeCheck()
 {
     // Todo
+    Type *type1 = expr1->getSymPtr()->getType();
+    Type *type2 = expr2->getSymPtr()->getType();
+    if(type1 != type2){
+        fprintf(yyout, "type %s and %s mismatch in line xx",
+        type1->toStr().c_str(), type2->toStr().c_str());
+        //exit(EXIT_FAILURE);
+    }
+    symbolEntry->setType(type1);
 }
 
 void Constant::typeCheck()
@@ -234,11 +254,8 @@ void IfElseStmt::typeCheck()
 void CompoundStmt::typeCheck()
 {
     // Todo
-}
-
-void SeqNode::typeCheck()
-{
-    // Todo
+    if(stmt!=nullptr)
+        stmt->typeCheck();
 }
 
 void DeclStmt::typeCheck()
@@ -254,6 +271,7 @@ void ReturnStmt::typeCheck()
 void AssignStmt::typeCheck()
 {
     // Todo
+    expr->typeCheck();
 }
 
 
