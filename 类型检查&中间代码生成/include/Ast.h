@@ -99,6 +99,7 @@ private:
 public:
     IDList(std::queue<SymbolEntry*> idlist) : idlist(idlist) {};
     SymbolEntry* getSymPtr() {return 0;};
+    void popone(){idlist.pop();};
     void output(int level);
     std::queue<SymbolEntry*> getList() {return this->idlist;};
     void setType(Type *type) {
@@ -229,6 +230,7 @@ public:
         }
         this->idList=idl;
     };
+    void genCode();
 };
 
 class InitStmt : public StmtNode

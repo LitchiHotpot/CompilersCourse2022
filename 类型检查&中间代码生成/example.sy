@@ -1,16 +1,6 @@
-void f() { int b=1;}
-int main()
-{
-    int a=getint();
-    int b;
-    putint(b);
-    int min;
-    
-    b = 3 +1;
-    f();
-    if (!a && a<b)
-        min = a;
-    else
-        min = b;
-    return f();
+int main(){
+    int a,b;
+    a=1;
+    b=2;
+    return 3;
 }
