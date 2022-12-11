@@ -57,8 +57,8 @@ public:
     enum {MIN,NOT,POS};
     SingelExpr(SymbolEntry *se, int op, ExprNode*expr1) : ExprNode(se), op(op), expr1(expr1){};
     void output(int level);
-    void typeCheck(){};
-    void genCode(){};
+    void typeCheck();
+    void genCode();
 };
 
 class BinaryExpr : public ExprNode
@@ -194,8 +194,8 @@ private:
 public:
     WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt) {};
     void output(int level);
-    void typeCheck(){};
-    void genCode(){};
+    void typeCheck();
+    void genCode();
 };
 
 class ParaIDList
@@ -238,8 +238,8 @@ private:
 public:
     InitStmt(InitIDList* initIDList) : initIDList(initIDList){};
     void output(int level);
-    void typeCheck(){};
-    void genCode(){};
+    void typeCheck();
+    void genCode();
     
 };
 
@@ -276,8 +276,8 @@ public:
     ExprStmt(ExprNode *expr) : expr(expr) {};
     ExprStmt()  {};
     void output(int level);
-    void typeCheck(){};
-    void genCode(){};
+    void typeCheck();
+    void genCode();
 };
 
 class FuncExpr : public ExprNode
@@ -288,8 +288,8 @@ public:
     FuncExpr(SymbolEntry *se) : ExprNode(se) {};
     FuncExpr(SymbolEntry *se, ParaIDList *paraidlist) : ExprNode(se), paraidlist(paraidlist) {};
     void output(int level);
-    void typeCheck(){};
-    void genCode(){};
+    void typeCheck();
+    void genCode();
 };
 
 class FunctionDef : public StmtNode

@@ -9,6 +9,8 @@
     extern Ast ast;
     int yylex();
     int yyerror( char const * );
+    Type *funcionRetType;
+    std::string funcName;
 }
 
 %code requires {
@@ -77,6 +79,11 @@ Stmt
 IDList
     : ID {
     	SymbolEntry *se;
+        se=identifiers->lookup($1);
+        if(se!=nullptr && ((IdentifierSymbolEntry*)se)->getScope()==identifiers->getLevel())
+        {
+            fprintf(stderr, "identifier \"%s\" has already been defined\n", (char*)$1);
+        }
         se = new IdentifierSymbolEntry(TypeSystem::voidType, $1, identifiers->getLevel());
         identifiers->install($1, se);
         std::queue<SymbolEntry*> idlist;
@@ -85,6 +92,11 @@ IDList
     }
     | IDList COMMA ID {
     	SymbolEntry *se;
+        se=identifiers->lookup($3);
+        if(se!=nullptr && ((IdentifierSymbolEntry*)se)->getScope()==identifiers->getLevel())
+        {
+            fprintf(stderr, "identifier \"%s\" has already been defined\n", (char*)$3);
+        }
         se = new IdentifierSymbolEntry(TypeSystem::voidType, $3, identifiers->getLevel());
         identifiers->install($3, se);
         std::queue<SymbolEntry*> idl = $1->getList();
@@ -137,7 +149,13 @@ ParaIDList
 InitIDList
     :
     ID ASSIGN Exp {
-        SymbolEntry *se = new IdentifierSymbolEntry(TypeSystem::intType, $1, identifiers->getLevel());
+        SymbolEntry *se;
+        se=identifiers->lookup($1);
+        if(se!=nullptr && ((IdentifierSymbolEntry*)se)->getScope()==identifiers->getLevel())
+        {
+            fprintf(stderr, "identifier \"%s\" has already been defined\n", (char*)$1);
+        }
+        se = new IdentifierSymbolEntry(TypeSystem::intType, $1, identifiers->getLevel());
         identifiers->install($1, se);
         std::queue<SymbolEntry*> idList;
         std::queue<ExprNode*> nums;
@@ -148,7 +166,13 @@ InitIDList
     }
     |
     InitIDList COMMA ID ASSIGN Exp {
-        SymbolEntry *se = new IdentifierSymbolEntry(TypeSystem::intType, $3, identifiers->getLevel());
+        SymbolEntry *se;
+        se=identifiers->lookup($3);
+        if(se!=nullptr && ((IdentifierSymbolEntry*)se)->getScope()==identifiers->getLevel())
+        {
+            fprintf(stderr, "identifier \"%s\" has already been defined\n", (char*)$3);
+        }
+        se = new IdentifierSymbolEntry(TypeSystem::intType, $3, identifiers->getLevel());
         identifiers->install($3, se);
         std::queue<SymbolEntry*> idList = $1->getList();
         std::queue<ExprNode*> nums = $1->getNums();
@@ -219,6 +243,13 @@ WhileStmt
 ReturnStmt
     :
     RETURN Exp SEMICOLON {
+        Type *retType=$2->getSymPtr()->getType();
+        if(retType->isFunc() && ((FunctionType*)retType)->getRetType()!=funcionRetType){
+            fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
+        }
+        else if(retType!=funcionRetType){
+            fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
+        }
         $$ = new ReturnStmt($2);
     }
     ;
@@ -258,11 +289,12 @@ NotExp
     PrimaryExp {$$ = $1;}
     |
     NOT NotExp {
-        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
+        SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::boolType, SymbolTable::getLabel());
         $$ = new SingelExpr(se, SingelExpr::NOT, $2);        
     }
     |
     ADD NotExp {
+
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new SingelExpr(se, SingelExpr::POS, $2);  
     }
@@ -400,9 +432,22 @@ FuncExpr
         se = identifiers->lookup($1);
         if(se == nullptr)
         {
-            fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
+            fprintf(stderr, "function \"%s\" is undefined\n", (char*)$1);
             delete [](char*)$1;
             assert(se != nullptr);
+        }
+        Type *type=se->getType();
+        std::vector<Type*> paramsType=((FunctionType*)type)->getParaType();
+        std::vector<Type*> newParamsType;
+        std::queue<ExprNode*> idList = $3->getList();
+        while(!idList.empty()){
+            ExprNode *se0=idList.front();
+            Type *t=se0->getSymPtr()->getType();
+            newParamsType.emplace_back(t);
+            idList.pop();
+        }
+        if(newParamsType!=paramsType){
+            fprintf(stderr, "the params of \"%s\" is wrong\n", (char*)$1);
         }
     	$$ = new FuncExpr(se, $3);
         delete []$1;   
@@ -412,6 +457,8 @@ FuncExpr
 FuncDef
     :
     Type ID LPAREN ParaList RPAREN {
+        funcionRetType=$1;
+        funcName=$2;
         Type *funcType;
         std::vector<Type*> paramsType;
         std::queue<SymbolEntry*> idList = $4->getList();

@@ -1,17 +1,16 @@
+void f() { int b=1;}
 int main()
 {
     int a=getint();
-    putint(a);
     int b;
+    putint(b);
     int min;
-    void f(){
-	   
-    };
-    a = 1 + 2 + main();
-    b = 2 + 3 + f();
-    if (a < b)
+    
+    b = 3 +1;
+    f();
+    if (!a && a<b)
         min = a;
     else
         min = b;
-    return min;
+    return f();
 }

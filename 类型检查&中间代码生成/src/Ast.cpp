@@ -75,7 +75,6 @@ void BinaryExpr::genCode()
     else if(op == OR)
     {
         // Todo
-        //test
     }
     else if(op >= LESS && op <= MORE)
     {
@@ -196,6 +195,35 @@ void AssignStmt::genCode()
     new StoreInstruction(addr, src, bb);
 }
 
+void SingelExpr::genCode()
+{
+
+}
+
+void WhileStmt::genCode()
+{
+
+}
+
+void InitStmt::genCode()
+{
+
+}
+
+void ExprStmt::genCode()
+{
+
+}
+
+void FuncExpr::genCode()
+{
+
+}
+
+
+//////TYPECHECK////
+
+
 void Ast::typeCheck()
 {
     //fprintf(yyout,"1111");
@@ -219,12 +247,38 @@ void SeqNode::typeCheck()
         stmt2->typeCheck();
 }
 
+void SingelExpr::typeCheck()
+{
+    Type *type = expr1->getSymPtr()->getType();
+    if(!type->isInt()){
+        fprintf(yyout, "type %s can not be used in singleExpr in line xx",
+            type->toStr().c_str());
+    }
+    symbolEntry->setType(type);
+}
+
 void BinaryExpr::typeCheck()
 {
     // Todo
+    expr1->typeCheck();
+    expr2->typeCheck();
     Type *type1 = expr1->getSymPtr()->getType();
     Type *type2 = expr2->getSymPtr()->getType();
-    if(type1 != type2){
+    if(type1->isFunc()){
+        fprintf(yyout,"111");
+        if(((FunctionType*)type1)->getRetType()!=type2){
+            fprintf(yyout, "type %s and %s mismatch in line xx",
+            type1->toStr().c_str(), type2->toStr().c_str());
+        }
+    }
+    else if(type2->isFunc()){
+        fprintf(yyout,"222");
+        if(((FunctionType*)type2)->getRetType()!=type1){
+            fprintf(yyout, "type %s and %s mismatch in line xx",
+            type1->toStr().c_str(), type2->toStr().c_str());
+        }
+    }
+    else if(type1 != type2){
         fprintf(yyout, "type %s and %s mismatch in line xx",
         type1->toStr().c_str(), type2->toStr().c_str());
         //exit(EXIT_FAILURE);
@@ -245,11 +299,34 @@ void Id::typeCheck()
 void IfStmt::typeCheck()
 {
     // Todo
+    cond->typeCheck();
+    Type *type = cond->getSymPtr()->getType();
+    if(type->isFunc()){
+        if(!((FunctionType*)type)->getRetType()->isInt()){
+            fprintf(yyout,"type %s is not bool",type->toStr().c_str());
+        }
+    }
+    else if(!type->isInt()){
+        fprintf(yyout,"type %s is not bool",type->toStr().c_str());
+    }
+    thenStmt->typeCheck();
 }
 
 void IfElseStmt::typeCheck()
 {
     // Todo
+    cond->typeCheck();
+    Type *type = cond->getSymPtr()->getType();
+    if(type->isFunc()){
+        if(!((FunctionType*)type)->getRetType()->isInt()){
+            fprintf(yyout,"type %s is not bool",type->toStr().c_str());
+        }
+    }
+    else if(!type->isInt()){
+        fprintf(yyout,"type %s is not bool",type->toStr().c_str());
+    }
+    thenStmt->typeCheck();
+    elseStmt->typeCheck();
 }
 
 void CompoundStmt::typeCheck()
@@ -275,6 +352,25 @@ void AssignStmt::typeCheck()
     expr->typeCheck();
 }
 
+void WhileStmt::typeCheck()
+{
+
+}
+
+void InitStmt::typeCheck()
+{
+
+}
+
+void ExprStmt::typeCheck()
+{
+
+}
+
+void FuncExpr::typeCheck()
+{
+    
+}
 
 void Ast::output()
 {

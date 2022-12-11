@@ -8,7 +8,7 @@ class Type
 private:
     int kind;
 protected:
-    enum {INT, VOID, FUNC, CONSTINT,PTR};
+    enum {INT, VOID, FUNC, CONSTINT, PTR};
 public:
     Type(int kind) : kind(kind) {};
     virtual ~Type() {};
@@ -17,6 +17,7 @@ public:
     bool isVoid() const {return kind == VOID;};
     bool isFunc() const {return kind == FUNC;};
     bool isConstInt() const {return kind == CONSTINT;};
+    //bool isBool() const {return kind == BOOL};
 };
 
 class IntType : public Type
@@ -53,6 +54,7 @@ public:
     FunctionType(Type* returnType, std::vector<Type*> paramsType) : 
     Type(Type::FUNC), returnType(returnType), paramsType(paramsType){};
     Type* getRetType() {return returnType;};
+    std::vector<Type*> getParaType() {return paramsType;};
     std::string toStr();
 };
 
