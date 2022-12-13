@@ -10,7 +10,7 @@ class BasicBlock;
 class Instruction
 {
 public:
-    Instruction(unsigned instType, BasicBlock *insert_bb = nullptr);
+    Instruction(unsigned instType, BasicBlock *insert_bb = nullptr,bool GLO=0);
     virtual ~Instruction();
     BasicBlock *getParent();
     bool isUncond() const {return instType == UNCOND;};
@@ -38,6 +38,7 @@ public:
     DummyInstruction() : Instruction(-1, nullptr) {};
     void output() const {};
 };
+
 
 class AllocaInstruction : public Instruction
 {

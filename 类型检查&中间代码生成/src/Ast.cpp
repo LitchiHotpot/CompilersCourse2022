@@ -7,6 +7,7 @@
 #include "Type.h"
 #include <queue>
 
+extern Unit unit;
 extern FILE *yyout;
 int Node::counter = 0;
 IRBuilder* Node::builder = nullptr;
@@ -151,7 +152,31 @@ void IfStmt::genCode()
 
 void IfElseStmt::genCode()
 {
-    // Todo
+    Function *func;
+    BasicBlock *then_bb, *else_bb, *end_bb;
+
+    func = builder->getInsertBB()->getParent();
+    then_bb = new BasicBlock(func);
+    else_bb = new BasicBlock(func);
+    end_bb = new BasicBlock(func);
+
+    cond->genCode();
+    backPatch(cond->trueList(), then_bb);
+    backPatch(cond->falseList(), else_bb);
+
+
+    builder->setInsertBB(then_bb);
+    thenStmt->genCode();
+    then_bb = builder->getInsertBB();
+    new UncondBrInstruction(end_bb, then_bb);
+
+    builder->setInsertBB(else_bb);
+    elseStmt->genCode();
+    else_bb = builder->getInsertBB();
+    new UncondBrInstruction(end_bb, else_bb);
+
+    builder->setInsertBB(end_bb);
+
 }
 
 void CompoundStmt::genCode()
@@ -184,6 +209,7 @@ void DeclStmt::genCode()
             addr_se->setType(new PointerType(se->getType()));
             addr = new Operand(addr_se);
             se->setAddr(addr);
+            //unit.insertGlo(se,nullptr);
             idlist_u->popone();
         }
         else if(se->isLocal())
@@ -244,14 +270,55 @@ void WhileStmt::genCode()
 
 }
 
-void InitIDList::genCode()
-{
-
-}
-
 void InitStmt::genCode()
 {
+    BasicBlock *bb = builder->getInsertBB();
+    std::queue<SymbolEntry*> *idlist_u = initIDList->getList();
+    std::queue<ExprNode*> *nums_u = initIDList->getNums();
+    //if(idlist_u->getList().empty())  std::cout<<"Empty List!"<<std::endl;
+    while(!idlist_u->empty()){
+        IdentifierSymbolEntry *se = dynamic_cast<IdentifierSymbolEntry *>(idlist_u->front());
+        ExprNode *nu = nums_u->front();
+        if(se->isGlobal())
+        {   
+            //std::cout<<"Add Global!"<<std::endl;
+            Operand *addr;
+            SymbolEntry *addr_se;
+            addr_se = new IdentifierSymbolEntry(*se);
+            addr_se->setType(new PointerType(se->getType()));
+            addr = new Operand(addr_se);
+            se->setAddr(addr);
+            nu->genCode();
+            //Operand *src_nu = nu->getOperand();
+            //std::cout<<src_nu->toStr()<<std::endl;
+            unit.insertGlo(se,nu);
+            initIDList->poponese();
+            initIDList->poponenu();
+        }
+        else if(se->isLocal())
+        {
+            //std::cout<<"Add Local!"<<se->toStr()<<std::endl;
+            Function *func = builder->getInsertBB()->getParent();
+            BasicBlock *entry = func->getEntry();
+            Instruction *alloca;
+            Operand *addr;
+            SymbolEntry *addr_se;
+            Type *type;
+            type = new PointerType(se->getType());
+            addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+            addr = new Operand(addr_se);
+            alloca = new AllocaInstruction(addr, se);                   // allocate space for local id in function stack.
+            entry->insertFront(alloca);                                 // allocate instructions should be inserted into the begin of the entry block.
+            se->setAddr(addr);
+            Operand *src_nu = nu->getOperand();
+            nu->genCode();              
+            new StoreInstruction(addr, src_nu, bb);
+            initIDList->poponese();
+            initIDList->poponenu();                           // set the addr operand in symbol entry so that we can use it in subsequent code generation.
+        }
 
+    //if(idlist_u->getList().empty())  std::cout<<"Empty!"<<std::endl;
+    }
 }
 
 void ExprStmt::genCode()
@@ -308,22 +375,34 @@ void BinaryExpr::typeCheck()
     expr2->typeCheck();
     Type *type1 = expr1->getSymPtr()->getType();
     Type *type2 = expr2->getSymPtr()->getType();
-    if(type1->isFunc()){
+    if(type1->isFunc() || type2->isFunc()){
         fprintf(yyout,"111");
-        if(((FunctionType*)type1)->getRetType()!=type2){
-            fprintf(yyout, "type %s and %s mismatch in line xx",
+        if(((FunctionType*)type1)->getRetType()==TypeSystem::voidType || ((FunctionType*)type2)->getRetType()==TypeSystem::voidType){
+            fprintf(stderr, "either of the type %s or %s is void\n",
             type1->toStr().c_str(), type2->toStr().c_str());
         }
-    }
-    else if(type2->isFunc()){
-        fprintf(yyout,"222");
-        if(((FunctionType*)type2)->getRetType()!=type1){
-            fprintf(yyout, "type %s and %s mismatch in line xx",
+        if(type1->isFunc() && type2->isFunc()){
+            if(((FunctionType*)type1)->getRetType()!=((FunctionType*)type2)->getRetType()){
+            fprintf(stderr, "type %s and %s mismatch in line xx\n",
             type1->toStr().c_str(), type2->toStr().c_str());
+            }
+        }
+        else if(type1->isFunc()){
+            if(((FunctionType*)type1)->getRetType()!=type2){
+            fprintf(stderr, "type %s and %s mismatch in line xx\n",
+            type1->toStr().c_str(), type2->toStr().c_str());
+            }
+        }
+        else if(type2->isFunc()){
+        //fprintf(yyout,"222");
+        if(((FunctionType*)type2)->getRetType()!=type1){
+            fprintf(stderr, "type %s and %s mismatch in line xx\n",
+            type1->toStr().c_str(), type2->toStr().c_str());
+            }
         }
     }
     else if(type1 != type2){
-        fprintf(yyout, "type %s and %s mismatch in line xx",
+        fprintf(stderr, "type %s and %s mismatch in line xx\n",
         type1->toStr().c_str(), type2->toStr().c_str());
         //exit(EXIT_FAILURE);
     }
@@ -388,6 +467,7 @@ void DeclStmt::typeCheck()
 void ReturnStmt::typeCheck()
 {
     // Todo
+    retValue->typeCheck();
 }
 
 void AssignStmt::typeCheck()
@@ -398,7 +478,10 @@ void AssignStmt::typeCheck()
 
 void WhileStmt::typeCheck()
 {
-
+    if(cond!=nullptr)
+        cond->typeCheck();
+    if(Stmt!=nullptr)
+        Stmt->typeCheck();
 }
 
 void InitStmt::typeCheck()
@@ -408,7 +491,7 @@ void InitStmt::typeCheck()
 
 void ExprStmt::typeCheck()
 {
-
+    expr->typeCheck();
 }
 
 void FuncExpr::typeCheck()
@@ -532,7 +615,7 @@ void InitIDList::output(int level)
 {
     std::string name, type;
     int scope;
-    while(!this->getList().empty()) {
+    while(!this->getList()->empty()) {
      SymbolEntry* se = this->idList.front();
      name = se->toStr();
      type = se->getType()->toStr();

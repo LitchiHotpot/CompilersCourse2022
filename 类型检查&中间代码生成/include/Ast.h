@@ -218,8 +218,10 @@ private:
 public:
     InitIDList(std::queue<SymbolEntry*> idList, std::queue<ExprNode*> nums) : idList(idList), nums(nums){};
     void output(int level);
-    std::queue<SymbolEntry*> getList() {return this->idList;};
-    std::queue<ExprNode*> getNums() {return this->nums;};
+    void poponese() {idList.pop();};
+    void poponenu() {nums.pop();};
+    std::queue<SymbolEntry*> *getList() {return &idList;};
+    std::queue<ExprNode*> *getNums() {return &nums;};
     void setType(Type *type) {
         std::queue<SymbolEntry*> idl;
         while(!this->idList.empty()){
@@ -230,7 +232,7 @@ public:
         }
         this->idList=idl;
     };
-    void genCode();
+    //void genCode();
 };
 
 class InitStmt : public StmtNode

@@ -5,14 +5,18 @@
 #include "Type.h"
 extern FILE* yyout;
 
-Instruction::Instruction(unsigned instType, BasicBlock *insert_bb)
+Instruction::Instruction(unsigned instType, BasicBlock *insert_bb,bool GLO)
 {
     prev = next = this;
     opcode = -1;
     this->instType = instType;
-    if (insert_bb != nullptr)
+    if (insert_bb != nullptr && !GLO)
     {
         insert_bb->insertBack(this);
+        parent = insert_bb;
+    }
+    else if(GLO){
+        insert_bb->insertFront(this);
         parent = insert_bb;
     }
 }
@@ -52,7 +56,7 @@ Instruction *Instruction::getPrev()
     return prev;
 }
 
-BinaryInstruction::BinaryInstruction(unsigned opcode, Operand *dst, Operand *src1, Operand *src2, BasicBlock *insert_bb) : Instruction(BINARY, insert_bb)
+BinaryInstruction::BinaryInstruction(unsigned opcode, Operand *dst, Operand *src1, Operand *src2, BasicBlock *insert_bb) : Instruction(BINARY, insert_bb,0)
 {
     this->opcode = opcode;
     operands.push_back(dst);
@@ -102,7 +106,7 @@ void BinaryInstruction::output() const
     fprintf(yyout, "  %s = %s %s %s, %s\n", s1.c_str(), op.c_str(), type.c_str(), s2.c_str(), s3.c_str());
 }
 
-CmpInstruction::CmpInstruction(unsigned opcode, Operand *dst, Operand *src1, Operand *src2, BasicBlock *insert_bb): Instruction(CMP, insert_bb){
+CmpInstruction::CmpInstruction(unsigned opcode, Operand *dst, Operand *src1, Operand *src2, BasicBlock *insert_bb): Instruction(CMP, insert_bb,0){
     this->opcode = opcode;
     operands.push_back(dst);
     operands.push_back(src1);
@@ -156,7 +160,7 @@ void CmpInstruction::output() const
     fprintf(yyout, "  %s = icmp %s %s %s, %s\n", s1.c_str(), op.c_str(), type.c_str(), s2.c_str(), s3.c_str());
 }
 
-UncondBrInstruction::UncondBrInstruction(BasicBlock *to, BasicBlock *insert_bb) : Instruction(UNCOND, insert_bb)
+UncondBrInstruction::UncondBrInstruction(BasicBlock *to, BasicBlock *insert_bb) : Instruction(UNCOND, insert_bb,0)
 {
     branch = to;
 }
@@ -176,7 +180,7 @@ BasicBlock *UncondBrInstruction::getBranch()
     return branch;
 }
 
-CondBrInstruction::CondBrInstruction(BasicBlock*true_branch, BasicBlock*false_branch, Operand *cond, BasicBlock *insert_bb) : Instruction(COND, insert_bb){
+CondBrInstruction::CondBrInstruction(BasicBlock*true_branch, BasicBlock*false_branch, Operand *cond, BasicBlock *insert_bb) : Instruction(COND, insert_bb,0){
     this->true_branch = true_branch;
     this->false_branch = false_branch;
     cond->addUse(this);
@@ -218,7 +222,7 @@ BasicBlock *CondBrInstruction::getTrueBranch()
     return true_branch;
 }
 
-RetInstruction::RetInstruction(Operand *src, BasicBlock *insert_bb) : Instruction(RET, insert_bb)
+RetInstruction::RetInstruction(Operand *src, BasicBlock *insert_bb) : Instruction(RET, insert_bb,0)
 {
     if(src != nullptr)
     {
@@ -248,7 +252,7 @@ void RetInstruction::output() const
     }
 }
 
-AllocaInstruction::AllocaInstruction(Operand *dst, SymbolEntry *se, BasicBlock *insert_bb) : Instruction(ALLOCA, insert_bb)
+AllocaInstruction::AllocaInstruction(Operand *dst, SymbolEntry *se, BasicBlock *insert_bb) : Instruction(ALLOCA, insert_bb,0)
 {
     operands.push_back(dst);
     dst->setDef(this);
@@ -270,7 +274,7 @@ void AllocaInstruction::output() const
     fprintf(yyout, "  %s = alloca %s, align 4\n", dst.c_str(), type.c_str());
 }
 
-LoadInstruction::LoadInstruction(Operand *dst, Operand *src_addr, BasicBlock *insert_bb) : Instruction(LOAD, insert_bb)
+LoadInstruction::LoadInstruction(Operand *dst, Operand *src_addr, BasicBlock *insert_bb) : Instruction(LOAD, insert_bb,0)
 {
     operands.push_back(dst);
     operands.push_back(src_addr);
@@ -297,7 +301,7 @@ void LoadInstruction::output() const
     fprintf(yyout, "  %s = load %s, %s %s, align 4\n", dst.c_str(), dst_type.c_str(), src_type.c_str(), src.c_str());
 }
 
-StoreInstruction::StoreInstruction(Operand *dst_addr, Operand *src, BasicBlock *insert_bb) : Instruction(STORE, insert_bb)
+StoreInstruction::StoreInstruction(Operand *dst_addr, Operand *src, BasicBlock *insert_bb) : Instruction(STORE, insert_bb,0)
 {
     operands.push_back(dst_addr);
     operands.push_back(src);

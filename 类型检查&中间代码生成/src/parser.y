@@ -174,11 +174,11 @@ InitIDList
         }
         se = new IdentifierSymbolEntry(TypeSystem::intType, $3, identifiers->getLevel());
         identifiers->install($3, se);
-        std::queue<SymbolEntry*> idList = $1->getList();
-        std::queue<ExprNode*> nums = $1->getNums();
-        idList.push(se);
-        nums.push($5);
-        $$ = new InitIDList(idList, nums);
+        std::queue<SymbolEntry*> *idList = $1->getList();
+        std::queue<ExprNode*> *nums = $1->getNums();
+        idList->push(se);
+        nums->push($5);
+        $$ = new InitIDList(*idList, *nums);
         delete $3;
     }
     ;

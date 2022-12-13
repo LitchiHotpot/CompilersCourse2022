@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "Function.h"
+#include "SymbolTable.h"
+#include "Ast.h"
 
 class Unit
 {
@@ -11,10 +13,13 @@ class Unit
 
 private:
     std::vector<Function *> func_list;
+    std::vector<SymbolEntry *> glo_list;
+    std::vector<ExprNode *> glonum_list;
 public:
     Unit() = default;
     ~Unit() ;
     void insertFunc(Function *);
+    void insertGlo(SymbolEntry *,ExprNode *);
     void removeFunc(Function *);
     void output() const;
     iterator begin() { return func_list.begin(); };
