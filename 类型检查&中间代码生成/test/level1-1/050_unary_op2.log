@@ -1,4 +1,0 @@
-test/level1-1/050_unary_op2.ll:24:9: error: '%t13' defined with type 'i32'
-  br i1 %t13, label %B54, label %B56
-        ^
-1 error generated.
