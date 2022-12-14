@@ -1,0 +1,4 @@
+test/level1-1/047_op_priority5.ll:10:1: error: expected instruction opcode
+}
+^
+1 error generated.

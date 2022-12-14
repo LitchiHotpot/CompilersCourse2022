@@ -1,0 +1,4 @@
+test/level1-1/1070_multi.ll:20:3: error: multiple definition of local value named 't2'
+  %t2 = load i32, i32* %t13, align 4
+  ^
+1 error generated.

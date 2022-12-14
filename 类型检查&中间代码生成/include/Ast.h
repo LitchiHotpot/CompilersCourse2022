@@ -193,6 +193,8 @@ class WhileStmt : public StmtNode
 private:
     ExprNode *cond;
     StmtNode *Stmt;
+    BasicBlock* cond_bb;
+    BasicBlock* end_bb;
 public:
     WhileStmt(ExprNode *cond, StmtNode *Stmt) : cond(cond), Stmt(Stmt) {};
     void output(int level);
@@ -321,5 +323,6 @@ public:
     void typeCheck();
     void genCode(Unit *unit);
 };
+
 
 #endif

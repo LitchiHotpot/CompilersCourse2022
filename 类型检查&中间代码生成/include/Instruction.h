@@ -29,7 +29,7 @@ protected:
     Instruction *next;
     BasicBlock *parent;
     std::vector<Operand*> operands;
-    enum {SINGLE ,BINARY, COND, UNCOND, RET, LOAD, STORE, CMP, ALLOCA , CONV};
+    enum {SINGLE ,BINARY, COND, UNCOND, RET, LOAD, STORE, CMP, ALLOCA , CONV , CALL};
 };
 
 // meaningless instruction, used as the head node of the instruction list.
@@ -137,5 +137,31 @@ public:
     ConverInstruction(int mo , Operand *dst, Operand *src, BasicBlock *insert_bb = nullptr);
     ~ConverInstruction();
     void output() const;
+};
+
+class CallInstruction : public Instruction {
+   private:
+    SymbolEntry* func;
+    Operand* dst;
+   public:
+    CallInstruction(Operand* dst1,SymbolEntry* func1,std::vector<Operand*> params,BasicBlock* insert_bb = nullptr);
+    ~CallInstruction();
+    void output() const;
+    Operand* getDef() { return operands[0]; }
+
+    std::vector<Operand*> getUse() {
+        std::vector<Operand*> vec;
+        for (auto it = operands.begin() + 1; it != operands.end(); it++)
+            vec.push_back(*it);
+        return vec;
+    }
+    SymbolEntry* getFuncSyt() { return func; }
+    void setDef(Operand* def) {
+        operands[0] = def;
+        dst = def;
+        def->setDef(this);
+    }
+    // used for auto inline
+    void addPred();
 };
 #endif

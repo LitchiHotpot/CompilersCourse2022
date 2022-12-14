@@ -473,6 +473,32 @@ public:
 
 void WhileStmt::genCode()
 {
+    Function* func;
+    BasicBlock *cond_bb, *while_bb, *end_bb, *bb;
+    bb = builder->getInsertBB();
+    func = builder->getInsertBB()->getParent();
+    cond_bb = new BasicBlock(func);
+    while_bb = new BasicBlock(func);
+    end_bb = new BasicBlock(func);
+
+    this->cond_bb = cond_bb;
+    this->end_bb = end_bb;
+
+    new UncondBrInstruction(cond_bb, bb);
+
+    builder->setInsertBB(cond_bb);
+    cond->genCode();
+    backPatch(cond->trueList(), while_bb);
+    backPatch(cond->falseList(), end_bb);
+
+    builder->setInsertBB(while_bb);
+    Stmt->genCode();
+    ExprNode* cond1 = cond;
+    // ExprNode* cond1 = cond;
+    cond1->genCode();
+    backPatch(cond1->trueList(), while_bb);
+    backPatch(cond1->falseList(), end_bb);
+    builder->setInsertBB(end_bb);
 
 }
 
@@ -534,6 +560,15 @@ void ExprStmt::genCode()
 
 void FuncExpr::genCode()
 {
+    std::queue<ExprNode*> templist=paraidlist->getList();
+    std::vector<Operand*> operands;
+    while(!templist.empty()){
+        ExprNode* temp=templist.front();
+        temp->genCode();
+        operands.push_back(temp->getOperand());
+    }
+    BasicBlock* bb = builder->getInsertBB();
+    new CallInstruction(dst, symbolEntry, operands, bb);
 
 }
 

@@ -395,3 +395,43 @@ void ConverInstruction::output() const {
     if(mode)
         fprintf(yyout, "  %s = zext i1 %s to i32\n", dst->toStr().c_str(), src->toStr().c_str());
 }
+
+CallInstruction::CallInstruction(Operand* dst1,
+                                 SymbolEntry* func1,
+                                 std::vector<Operand*> params,
+                                 BasicBlock* insert_bb)
+    : Instruction(CALL, insert_bb){
+    this->dst=dst1;
+    this->func=func1;
+    operands.push_back(dst);
+    if (dst)
+        dst->setDef(this);
+    for (auto param : params) {
+        operands.push_back(param);
+        param->addUse(this);
+    }
+}
+
+
+CallInstruction::~CallInstruction() {
+     operands[0]->setDef(nullptr);
+    if (operands[0]->usersNum() == 0)
+        delete operands[0];
+    operands[1]->removeUse(this);
+}
+
+void CallInstruction::output() const {
+    fprintf(yyout, "  ");
+    if (operands[0])
+        fprintf(yyout, "%s = ", operands[0]->toStr().c_str());
+    FunctionType* type = (FunctionType*)(func->getType());
+    fprintf(yyout, "call %s %s(", type->getRetType()->toStr().c_str(),
+            func->toStr().c_str());
+    for (long unsigned int i = 1; i < operands.size(); i++) {
+        if (i != 1)
+            fprintf(yyout, ", ");
+        fprintf(yyout, "%s %s", operands[i]->getType()->toStr().c_str(),
+                operands[i]->toStr().c_str());
+    }
+    fprintf(yyout, ")\n");
+}
