@@ -46,6 +46,7 @@ public:
     ExprNode(SymbolEntry *symbolEntry) : symbolEntry(symbolEntry){};
     Operand* getOperand() {return dst;};
     SymbolEntry* getSymPtr() {return symbolEntry;};
+    void genCode(){};
 };
 
 class SingelExpr : public ExprNode

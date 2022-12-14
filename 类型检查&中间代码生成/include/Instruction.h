@@ -29,7 +29,7 @@ protected:
     Instruction *next;
     BasicBlock *parent;
     std::vector<Operand*> operands;
-    enum {SINGLE ,BINARY, COND, UNCOND, RET, LOAD, STORE, CMP, ALLOCA};
+    enum {SINGLE ,BINARY, COND, UNCOND, RET, LOAD, STORE, CMP, ALLOCA , CONV};
 };
 
 // meaningless instruction, used as the head node of the instruction list.
@@ -127,7 +127,14 @@ public:
     SingleInstruction(unsigned opcode, Operand *dst, Operand *src , BasicBlock *insert_bb = nullptr);
     ~SingleInstruction();
     void output() const;
-    enum{MIN};
+    enum{MIN,NOT,POS};
 };
 
+class ConverInstruction : public Instruction
+{
+public:
+    ConverInstruction(Operand *dst, Operand *src, BasicBlock *insert_bb = nullptr);
+    ~ConverInstruction();
+    void output() const;
+};
 #endif

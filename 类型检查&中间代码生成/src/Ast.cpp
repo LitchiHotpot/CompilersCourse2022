@@ -21,10 +21,12 @@ void Node::backPatch(std::vector<Instruction*> &list, BasicBlock*bb)
 {
     for(auto &inst:list)
     {
-        if(inst->isCond())
-            dynamic_cast<CondBrInstruction*>(inst)->setTrueBranch(bb);
-        else if(inst->isUncond())
-            dynamic_cast<UncondBrInstruction*>(inst)->setBranch(bb);
+        if(inst->isCond()){
+            //std::cout<<"1"<<std::endl;
+            dynamic_cast<CondBrInstruction*>(inst)->setTrueBranch(bb);}
+        else if(inst->isUncond()){
+            //std::cout<<"2"<<std::endl;
+            dynamic_cast<UncondBrInstruction*>(inst)->setBranch(bb);}
     }
 }
 
@@ -151,6 +153,7 @@ void BinaryExpr::genCode()
 {
     BasicBlock *bb = builder->getInsertBB();
     Function *func = bb->getParent();
+    //std::cout<<func<<std::endl;
     if (op == AND)
     {
         BasicBlock *trueBB = new BasicBlock(func);  // if the result of lhs is true, jump to the trueBB.
@@ -235,6 +238,13 @@ void BinaryExpr::genCode()
             break;
         }
         new BinaryInstruction(opcode, dst, src1, src2, bb);
+        BasicBlock *truebb, *falsebb, *tempbb;
+        truebb = new BasicBlock(func);
+        falsebb = new BasicBlock(func);
+        tempbb = new BasicBlock(func);
+
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
+        false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
 }
 
@@ -252,6 +262,7 @@ void Id::genCode()
 
 void IfStmt::genCode()
 {
+    //std::cout<<"1"<<std::endl;
     Function *func;
     BasicBlock *then_bb, *end_bb;
 
@@ -269,6 +280,7 @@ void IfStmt::genCode()
     new UncondBrInstruction(end_bb, then_bb);
 
     builder->setInsertBB(end_bb);
+    //std::cout<<"2"<<std::endl;
 }
 
 void IfElseStmt::genCode()
@@ -398,14 +410,50 @@ public:
 };
 */
     BasicBlock *bb = builder->getInsertBB();
+    Function *func = bb->getParent();
+    //std::cout<<func<<std::endl;
     expr1->genCode();
     Operand *src = expr1->getOperand();
     int opcode;
     if(op==MIN){
         //std::cout<<"min"<<std::endl;
         opcode = SingleInstruction::MIN;
+        new SingleInstruction(opcode,dst,src,bb);
+        BasicBlock *truebb, *falsebb, *tempbb;
+        truebb = new BasicBlock(func);
+        falsebb = new BasicBlock(func);
+        tempbb = new BasicBlock(func);
+
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
+        false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
-    new SingleInstruction(opcode,dst,src,bb);
+    else if(op==NOT){
+        Operand* temp = new Operand(new TemporarySymbolEntry(
+            TypeSystem::boolType, SymbolTable::getLabel()));
+        new CmpInstruction(
+            CmpInstruction::NE, temp, src,
+            new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
+            bb);
+        src = temp;
+        opcode = SingleInstruction::NOT;
+        new SingleInstruction(opcode,dst,src,bb);
+        Operand* temp1 = new Operand(new TemporarySymbolEntry(
+                TypeSystem::intType, SymbolTable::getLabel()));
+        dst=temp1;
+        new ConverInstruction(dst,src,bb);
+        BasicBlock *truebb, *falsebb, *tempbb;
+        truebb = new BasicBlock(func);
+        falsebb = new BasicBlock(func);
+        tempbb = new BasicBlock(func);
+
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
+
+        false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
+    }
+    else if(op==POS){
+        
+    }
+    
 }
 
 void WhileStmt::genCode()

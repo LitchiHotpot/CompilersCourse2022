@@ -1,0 +1,4 @@
+test/level1-1/049_unary_op.ll:16:9: error: '%t5' defined with type 'i32'
+  br i1 %t5, label %B33, label %B35
+        ^
+1 error generated.

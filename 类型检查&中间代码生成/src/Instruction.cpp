@@ -167,6 +167,7 @@ UncondBrInstruction::UncondBrInstruction(BasicBlock *to, BasicBlock *insert_bb) 
 
 void UncondBrInstruction::output() const
 {
+    //std::cout<<"1"<<std::endl;
     fprintf(yyout, "  br label %%B%d\n", branch->getNo());
 }
 
@@ -194,6 +195,7 @@ CondBrInstruction::~CondBrInstruction()
 
 void CondBrInstruction::output() const
 {
+    //std::cout<<"1"<<std::endl;
     std::string cond, type;
     cond = operands[0]->toStr();
     type = operands[0]->getType()->toStr();
@@ -353,10 +355,40 @@ void SingleInstruction::output() const
     {
     case MIN:
         op = "sub";
+        fprintf(yyout, "  %s = %s nsw %s 0, %s\n", s1.c_str(), op.c_str(), type.c_str(), s2.c_str());
+        break;
+    case NOT:
+        op = "xor";
+        fprintf(yyout, "  %s = %s i1 %s , true\n", s1.c_str(), op.c_str(), s2.c_str());
+        break;
+    case POS:
         break;
     default:
         break;
     }
-    fprintf(yyout, "  %s = %s nsw %s 0, %s\n", s1.c_str(), op.c_str(), type.c_str(), s2.c_str());
     
+    
+}
+
+ConverInstruction::ConverInstruction(Operand* dst,
+                                 Operand* src,
+                                 BasicBlock* insert_bb)
+    : Instruction(CONV, insert_bb) {
+    operands.push_back(dst);
+    operands.push_back(src);
+    dst->setDef(this);
+    src->addUse(this);
+}
+
+ConverInstruction::~ConverInstruction() {
+    operands[0]->setDef(nullptr);
+    if (operands[0]->usersNum() == 0)
+        delete operands[0];
+    operands[1]->removeUse(this);
+}
+
+void ConverInstruction::output() const {
+    Operand* dst = operands[0];
+    Operand* src = operands[1];
+    fprintf(yyout, "  %s = zext i1 %s to i32\n", dst->toStr().c_str(), src->toStr().c_str());
 }

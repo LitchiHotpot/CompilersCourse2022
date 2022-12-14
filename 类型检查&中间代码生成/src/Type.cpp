@@ -1,7 +1,7 @@
 #include "Type.h"
 #include <sstream>
 
-ConstIntType TypeSystem::commonConstInt =ConstIntType(4);
+ConstIntType TypeSystem::commonConstInt =ConstIntType(32);
 IntType TypeSystem::commonInt = IntType(32);
 IntType TypeSystem::commonBool = IntType(1);
 VoidType TypeSystem::commonVoid = VoidType();
@@ -20,7 +20,16 @@ std::string IntType::toStr()
 
 std::string ConstIntType::toStr()
 {
-    return "const int";
+    std::ostringstream buffer;
+    buffer << "i" << size;
+    return buffer.str();
+}
+
+std::string BoolType::toStr()
+{
+    std::ostringstream buffer;
+    buffer << "i" << size;
+    return buffer.str();
 }
 
 std::string VoidType::toStr()
