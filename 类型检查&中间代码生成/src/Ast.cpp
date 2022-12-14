@@ -423,7 +423,12 @@ public:
         truebb = new BasicBlock(func);
         falsebb = new BasicBlock(func);
         tempbb = new BasicBlock(func);
-
+        Operand* dst_br = new Operand(new TemporarySymbolEntry(
+            TypeSystem::boolType, SymbolTable::getLabel()));
+        new CmpInstruction(
+            CmpInstruction::G, dst_br, dst,
+            new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
+            bb);
         true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
@@ -431,7 +436,7 @@ public:
         Operand* temp = new Operand(new TemporarySymbolEntry(
             TypeSystem::boolType, SymbolTable::getLabel()));
         new CmpInstruction(
-            CmpInstruction::NE, temp, src,
+            CmpInstruction::G, temp, src,
             new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
             bb);
         src = temp;
@@ -440,18 +445,28 @@ public:
         Operand* temp1 = new Operand(new TemporarySymbolEntry(
                 TypeSystem::intType, SymbolTable::getLabel()));
         dst=temp1;
-        new ConverInstruction(dst,src,bb);
+        new ConverInstruction(1,dst,src,bb);
         BasicBlock *truebb, *falsebb, *tempbb;
         truebb = new BasicBlock(func);
         falsebb = new BasicBlock(func);
         tempbb = new BasicBlock(func);
-
         true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
-
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
     else if(op==POS){
-        
+        BasicBlock *truebb, *falsebb, *tempbb;
+        truebb = new BasicBlock(func);
+        falsebb = new BasicBlock(func);
+        tempbb = new BasicBlock(func);
+        Operand* dst_br = new Operand(new TemporarySymbolEntry(
+            TypeSystem::boolType, SymbolTable::getLabel()));
+         new CmpInstruction(
+            CmpInstruction::G, dst_br, src,
+            new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
+            bb);
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst_br, bb));
+        false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
+    
     }
     
 }

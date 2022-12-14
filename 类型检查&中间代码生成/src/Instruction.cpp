@@ -370,10 +370,12 @@ void SingleInstruction::output() const
     
 }
 
-ConverInstruction::ConverInstruction(Operand* dst,
+ConverInstruction::ConverInstruction(int mo,
+                                Operand* dst,
                                  Operand* src,
                                  BasicBlock* insert_bb)
     : Instruction(CONV, insert_bb) {
+    mode=mo;
     operands.push_back(dst);
     operands.push_back(src);
     dst->setDef(this);
@@ -390,5 +392,6 @@ ConverInstruction::~ConverInstruction() {
 void ConverInstruction::output() const {
     Operand* dst = operands[0];
     Operand* src = operands[1];
-    fprintf(yyout, "  %s = zext i1 %s to i32\n", dst->toStr().c_str(), src->toStr().c_str());
+    if(mode)
+        fprintf(yyout, "  %s = zext i1 %s to i32\n", dst->toStr().c_str(), src->toStr().c_str());
 }

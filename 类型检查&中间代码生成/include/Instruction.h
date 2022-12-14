@@ -133,7 +133,8 @@ public:
 class ConverInstruction : public Instruction
 {
 public:
-    ConverInstruction(Operand *dst, Operand *src, BasicBlock *insert_bb = nullptr);
+    int mode;
+    ConverInstruction(int mo , Operand *dst, Operand *src, BasicBlock *insert_bb = nullptr);
     ~ConverInstruction();
     void output() const;
 };
