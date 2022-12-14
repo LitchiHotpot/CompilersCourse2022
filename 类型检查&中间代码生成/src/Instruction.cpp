@@ -199,7 +199,7 @@ void CondBrInstruction::output() const
     type = operands[0]->getType()->toStr();
     int true_label = true_branch->getNo();
     int false_label = false_branch->getNo();
-    fprintf(yyout, "  br %s %s, label %%B%d, label %%B%d\n", type.c_str(), cond.c_str(), true_label, false_label);
+    fprintf(yyout, "  br i1 %s, label %%B%d, label %%B%d\n", cond.c_str(), true_label, false_label);
 }
 
 void CondBrInstruction::setFalseBranch(BasicBlock *bb)
@@ -323,4 +323,40 @@ void StoreInstruction::output() const
     std::string src_type = operands[1]->getType()->toStr();
 
     fprintf(yyout, "  store %s %s, %s %s, align 4\n", src_type.c_str(), src.c_str(), dst_type.c_str(), dst.c_str());
+}
+
+SingleInstruction::SingleInstruction(unsigned opcode , Operand *dst, Operand *src, BasicBlock *insert_bb) : Instruction(SINGLE, insert_bb,0)
+{
+    this->opcode = opcode;
+    operands.push_back(dst);
+    operands.push_back(src);
+    dst->setDef(this);
+    src->addUse(this);
+}
+
+SingleInstruction::~SingleInstruction()
+{
+    operands[0]->setDef(nullptr);
+    if(operands[0]->usersNum() == 0)
+        delete operands[0];
+    operands[1]->removeUse(this);
+}
+
+void SingleInstruction::output() const
+{
+    //std::cout<<"single"<<std::endl;
+    std::string s1, s2, op, type;
+    s1 = operands[0]->toStr();
+    s2 = operands[1]->toStr();
+    type = operands[0]->getType()->toStr();
+    switch (opcode)
+    {
+    case MIN:
+        op = "sub";
+        break;
+    default:
+        break;
+    }
+    fprintf(yyout, "  %s = %s nsw %s 0, %s\n", s1.c_str(), op.c_str(), type.c_str(), s2.c_str());
+    
 }

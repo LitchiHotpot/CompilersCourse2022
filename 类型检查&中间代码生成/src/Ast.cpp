@@ -56,6 +56,94 @@ void FunctionDef::genCode()
      * Construct control flow graph. You need do set successors and predecessors for each basic block.
      * Todo
     */
+    for (auto block = func->begin(); block != func->end(); block++) {
+        //获取该块的最后一条指令
+        Instruction* i = (*block)->begin();
+        Instruction* last = (*block)->rbegin();
+        while (i != last) {
+            if (i->isCond() || i->isUncond()) {
+                (*block)->remove(i);
+            }
+            i = i->getNext();
+        }
+        if (last->isCond()) {
+            BasicBlock *truebranch, *falsebranch;
+            truebranch =
+                dynamic_cast<CondBrInstruction*>(last)->getTrueBranch();
+            falsebranch =
+                dynamic_cast<CondBrInstruction*>(last)->getFalseBranch();
+            if (truebranch->empty()) {
+                new RetInstruction(nullptr, truebranch);
+
+            } else if (falsebranch->empty()) {
+                new RetInstruction(nullptr, falsebranch);
+            }
+            (*block)->addSucc(truebranch);
+            (*block)->addSucc(falsebranch);
+            truebranch->addPred(*block);
+            falsebranch->addPred(*block);
+        } else if (last->isUncond()) {  //无条件跳转指令可获取跳转的目标块
+            BasicBlock* dst =
+                dynamic_cast<UncondBrInstruction*>(last)->getBranch();
+            (*block)->addSucc(dst);
+            dst->addPred(*block);
+            if (dst->empty()) {
+                if (((FunctionType*)(se->getType()))->getRetType() ==
+                    TypeSystem::intType) {
+                    new RetInstruction(new Operand(new ConstantSymbolEntry(
+                                           TypeSystem::intType, 0)),
+                                       dst);
+                }  else if (((FunctionType*)(se->getType()))->getRetType() ==
+                           TypeSystem::voidType) {
+                    new RetInstruction(nullptr, dst);
+                }
+            }
+
+        }
+        //最后一条语句不是返回以及跳转
+        else if (!last->isRet()) {
+            if (((FunctionType*)(se->getType()))->getRetType() ==
+                TypeSystem::voidType) {
+                new RetInstruction(nullptr, *block);
+            }
+        }
+    }
+    // 如果已经有ret了，删除后面的指令
+    for (auto it = func->begin(); it != func->end(); it++) {
+        auto block = *it;
+        bool flag = false;
+        for (auto i = block->begin(); i != block->end(); i = i->getNext()) {
+            if (flag) {
+                block->remove(i);
+                delete i;
+                continue;
+            }
+            if (i->isRet())
+                flag = true;
+        }
+        if (flag) {
+            while (block->succ_begin() != block->succ_end()) {
+                auto b = *(block->succ_begin());
+                block->removeSucc(b);
+                b->removePred(block);
+            }
+        }
+    }
+    while (true) {
+        bool flag = false;
+        for (auto it = func->begin(); it != func->end(); it++) {
+            auto block = *it;
+            if (block == func->getEntry())
+                continue;
+            if (block->getNumOfPred() == 0) {
+                delete block;
+                flag = true;
+                break;
+            }
+        }
+        if (!flag)
+            break;
+    }
    
 }
 
@@ -83,10 +171,43 @@ void BinaryExpr::genCode()
         true_list = merge(expr1->trueList(), expr2->trueList());
         false_list=expr2->falseList();
     }
-    else if(op >= LESS && op <= MORE)
+    else if(op >= LESS && op <= NOTEQUAL)
     {
-        // Todo
+        expr1->genCode();
+        expr2->genCode();
+        Operand *src1 = expr1->getOperand();
+        Operand *src2 = expr2->getOperand();
+        int opcode=-1;
+        switch (op)
+        {
+        case EQUAL:
+            opcode = CmpInstruction::E;
+            break;
+        case NOTEQUAL:
+            opcode = CmpInstruction::NE;
+            break;
+        case LESS:
+            opcode = CmpInstruction::L;
+            break;
+        case LESSEQ:
+            opcode = CmpInstruction::LE;
+            break;
+        case MORE:
+            opcode = CmpInstruction::G;
+            break;
+        case MOREEQ:
+            opcode = CmpInstruction::GE;
+            break;
+        }
+        new CmpInstruction(opcode, dst, src1, src2, bb);
+        BasicBlock *truebb, *falsebb, *tempbb;
+        truebb = new BasicBlock(func);
+        falsebb = new BasicBlock(func);
+        tempbb = new BasicBlock(func);
 
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
+
+        false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
     else if(op >= ADD && op <= MOD)
     {
@@ -209,7 +330,7 @@ void DeclStmt::genCode()
             addr_se->setType(new PointerType(se->getType()));
             addr = new Operand(addr_se);
             se->setAddr(addr);
-            //unit.insertGlo(se,nullptr);
+            unit.insertGlo(se,nullptr);
             idlist_u->popone();
         }
         else if(se->isLocal())
@@ -262,7 +383,29 @@ void AssignStmt::genCode()
 
 void SingelExpr::genCode()
 {
-
+    /*
+    class SingelExpr : public ExprNode
+{
+private:
+    int op;
+    ExprNode *expr1;
+public:
+    enum {MIN,NOT,POS};
+    SingelExpr(SymbolEntry *se, int op, ExprNode*expr1) : ExprNode(se), op(op), expr1(expr1){};
+    void output(int level);
+    void typeCheck();
+    void genCode();
+};
+*/
+    BasicBlock *bb = builder->getInsertBB();
+    expr1->genCode();
+    Operand *src = expr1->getOperand();
+    int opcode;
+    if(op==MIN){
+        //std::cout<<"min"<<std::endl;
+        opcode = SingleInstruction::MIN;
+    }
+    new SingleInstruction(opcode,dst,src,bb);
 }
 
 void WhileStmt::genCode()
