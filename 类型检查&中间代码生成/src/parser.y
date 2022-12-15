@@ -357,37 +357,37 @@ RelExp
     :
     AddExp {$$ = $1;}
     |
-    RelExp LESSEQ AddExp
+    AddExp LESSEQ RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::LESSEQ, $1, $3);
     }
     |
-    RelExp MOREEQ AddExp
+    AddExp MOREEQ RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::MOREEQ, $1, $3);
     }
     |
-    RelExp LESS AddExp
+    AddExp LESS RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::LESS, $1, $3);
     }
     |
-    RelExp MORE AddExp
+    AddExp MORE RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::MORE, $1, $3);
     }
     |
-    RelExp EQUAL AddExp
+    AddExp EQUAL RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::EQUAL, $1, $3);
     }
     |
-    RelExp NOTEQUAL AddExp
+    AddExp NOTEQUAL RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
         $$ = new BinaryExpr(se, BinaryExpr::NOTEQUAL, $1, $3);

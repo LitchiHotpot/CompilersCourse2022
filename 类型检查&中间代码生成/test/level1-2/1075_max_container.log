@@ -1,0 +1,3 @@
+syntax error, unexpected ID, expecting RPAREN
+timeout: the monitored command dumped core
+Segmentation fault
