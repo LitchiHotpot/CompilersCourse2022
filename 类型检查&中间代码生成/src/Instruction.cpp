@@ -406,7 +406,7 @@ CallInstruction::CallInstruction(Operand* dst,
     if (dst){
         dst->setDef(this);
         //std::cout<<"1"<<std::endl;
-        }
+    }
     for (auto param : params) {
         operands.push_back(param);
         param->addUse(this);
@@ -422,7 +422,7 @@ CallInstruction::~CallInstruction() {
 }
 
 void CallInstruction::output() const {
-    std::cout<<"1"<<std::endl;
+    //std::cout<<"1"<<std::endl;
     fprintf(yyout, "  ");
     if (operands[0])
         fprintf(yyout, "%s = ", operands[0]->toStr().c_str());
@@ -436,4 +436,5 @@ void CallInstruction::output() const {
                 operands[i]->toStr().c_str());
     }
     fprintf(yyout, ")\n");
+    //std::cout<<"1"<<std::endl;
 }

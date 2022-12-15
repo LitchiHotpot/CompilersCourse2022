@@ -51,6 +51,33 @@ void FunctionDef::genCode()
     BasicBlock *entry = func->getEntry();
     // set the insert point to the entry basicblock of this function.
     builder->setInsertBB(entry);
+    
+    //paralist
+    ParaList *pa_list=this->paraList;
+    std::queue<SymbolEntry*> expr_list=pa_list->getList();
+    FunctionType *functype=dynamic_cast<FunctionType *>(se->getType());
+    std::vector<Type*> para_type=functype->getParaType();
+    int i=0;
+    while(!expr_list.empty()){
+        IdentifierSymbolEntry *se_pa = dynamic_cast<IdentifierSymbolEntry *>(expr_list.front());
+        Instruction *alloca;
+        Operand *addr;
+        SymbolEntry *addr_se;
+        Type* type;
+        type = new PointerType(para_type[i]);
+        //std::cout<<para_type[i]->toStr<<std::endl;
+        addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+        addr = new Operand(addr_se);
+        alloca = new AllocaInstruction(addr, se_pa);
+        Operand *temp1 = new Operand(se_pa); 
+        Operand *temp = new Operand(new TemporarySymbolEntry(para_type[i],SymbolTable::getLabel()));
+        new StoreInstruction(addr, temp, entry);                  
+        entry->insertFront(alloca);                                 
+        se_pa->setAddr(addr);              
+        expr_list.pop(); 
+        i++;
+        //std::cout<<"add 1 para"<<std::endl;         
+    }
 
     stmt->genCode();
 
@@ -219,6 +246,17 @@ void BinaryExpr::genCode()
         expr2->genCode();
         Operand *src1 = expr1->getOperand();
         Operand *src2 = expr2->getOperand();
+        if(!(src1->getType()==TypeSystem::intType||src1->getType()==TypeSystem::constintType)){
+        Operand* temp1 = new Operand(new TemporarySymbolEntry(
+            TypeSystem::intType, SymbolTable::getLabel()));
+            new ConverInstruction(1,temp1,src1,bb);
+            src1=temp1;
+            }
+        if(!(src2->getType()==TypeSystem::intType||src2->getType()==TypeSystem::constintType)){
+        Operand* temp2 = new Operand(new TemporarySymbolEntry(
+            TypeSystem::intType, SymbolTable::getLabel()));
+            new ConverInstruction(1,temp2,src2,bb);
+            src2=temp2;}
         int opcode;
         switch (op)
         {
@@ -467,7 +505,7 @@ public:
             bb);
         true_list.push_back(new CondBrInstruction(truebb, tempbb, dst_br, bb));
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
-    
+        dst=dst_br;
     }
     
 }
@@ -556,11 +594,13 @@ void InitStmt::genCode()
 
 void ExprStmt::genCode()
 {
-
+    if(expr!=nullptr)
+    expr->genCode();
 }
 
 void FuncExpr::genCode()
 {
+    //std::cout<<"1"<<std::endl;
     std::queue<ExprNode*> templist=paraidlist->getList();
     std::vector<Operand*> operands;
     while(!templist.empty()){
@@ -570,10 +610,10 @@ void FuncExpr::genCode()
         operands.push_back(temp->getOperand());
         templist.pop();
     }
-    std::cout<<"1"<<std::endl;
+    //std::cout<<"1"<<std::endl;
     BasicBlock* bb = builder->getInsertBB();
+    //std::cout<<symbolEntry->toStr()<<std::endl;
     new CallInstruction(dst, symbolEntry, operands, bb);
-
 }
 
 

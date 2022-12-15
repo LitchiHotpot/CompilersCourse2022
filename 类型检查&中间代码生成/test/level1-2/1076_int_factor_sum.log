@@ -1,3 +1,5 @@
 the return_type of "main" is wrong
-timeout: the monitored command dumped core
-Segmentation fault
+test/level1-2/1076_int_factor_sum.ll:19:7: error: value doesn't match function result type 'i32'
+  ret void
+      ^
+1 error generated.

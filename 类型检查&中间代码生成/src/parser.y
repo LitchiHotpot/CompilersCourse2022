@@ -41,7 +41,7 @@
 %token RETURN
 
 %nterm <itype> Intint
-%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt InitStmt DeclStmt FuncDef ExprStmt WhileStmt
+%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt InitStmt DeclStmt FuncDef ExprStmt WhileStmt BlankStmt
 %nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp MulExp NotExp FuncExpr
 %nterm <type> Type
 %nterm <idlist> IDList
@@ -73,6 +73,7 @@ Stmt
     | InitStmt {$$=$1;}
     | ExprStmt {$$=$1;}
     | WhileStmt {$$=$1;}
+    | BlankStmt {$$=$1;}
     ;
 
     
@@ -419,10 +420,11 @@ ExprStmt
     :
     Exp SEMICOLON {
     	$$ = new ExprStmt($1);  
-    }
-    |
+    };
+BlankStmt
+    : 
     SEMICOLON {
-        $$ = new ExprStmt();
+        $$ = new BlankStmt();
     }
     ;
 FuncExpr
@@ -450,7 +452,7 @@ FuncExpr
             fprintf(stderr, "the params of \"%s\" is wrong\n", (char*)$1);
         }
     	$$ = new FuncExpr(se, $3);
-        delete []$1;   
+        //delete []$1;   
     }
     ;
     
@@ -481,7 +483,7 @@ FuncDef
         SymbolTable *top = identifiers;
         identifiers = identifiers->getPrev();
         delete top;
-        delete []$2;
+        //delete []$2;
     }
    
     ;

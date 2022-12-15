@@ -1,5 +1,3 @@
 the params of "putint" is wrong
-test/level1-2/029_if_test2.ll:7:1: error: expected instruction opcode
-}
-^
-1 error generated.
+timeout: the monitored command dumped core
+Segmentation fault

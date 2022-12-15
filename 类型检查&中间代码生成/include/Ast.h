@@ -256,7 +256,7 @@ private:
     StmtNode *funcCall;
     ExprNode *retValue;
 public:
-     ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
+    ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
     ReturnStmt(StmtNode *funcCall) : funcCall(funcCall) {};
     void output(int level);
     void typeCheck();
@@ -292,8 +292,10 @@ class FuncExpr : public ExprNode
 private:
     ParaIDList *paraidlist;
 public:
-    FuncExpr(SymbolEntry *se) : ExprNode(se) {};
-    FuncExpr(SymbolEntry *se, ParaIDList *paraidlist) : ExprNode(se), paraidlist(paraidlist) {};
+    FuncExpr(SymbolEntry *se) : ExprNode(se) {dst=new Operand(new TemporarySymbolEntry(
+            se->getType(), SymbolTable::getLabel()));};
+    FuncExpr(SymbolEntry *se, ParaIDList *paraidlist) : ExprNode(se), paraidlist(paraidlist) {dst=new Operand(new TemporarySymbolEntry(
+            se->getType(), SymbolTable::getLabel()));};
     void output(int level);
     void typeCheck();
     void genCode();
@@ -324,5 +326,11 @@ public:
     void genCode(Unit *unit);
 };
 
-
+class BlankStmt : public StmtNode {
+   public:
+    BlankStmt(){};
+    void output(int level){};
+    void typeCheck(){};
+    void genCode(){};
+};
 #endif
