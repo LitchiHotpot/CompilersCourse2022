@@ -5,12 +5,25 @@
 
 extern FILE* yyout;
 
-Function::Function(Unit *u, SymbolEntry *s)
+Function::Function(Unit *u, SymbolEntry *s, ParaList *p)
 {
     u->insertFunc(this);
     entry = new BasicBlock(this);
     sym_ptr = s;
     parent = u;
+    if(p){
+        para_list=p;
+        FunctionType* funcType = dynamic_cast<FunctionType*>(sym_ptr->getType());
+        std::vector<Type *> paratype=funcType->getParaType();
+        std::vector<Type *>::iterator iter;
+        for(iter = paratype.begin(); iter != paratype.end(); iter++){
+            TemporarySymbolEntry *temp = new TemporarySymbolEntry((*iter),SymbolTable::getLabel());
+            templist.push_back(temp);
+        }
+    }
+    else
+        para_list=nullptr;
+   
 }
 
 Function::~Function()
@@ -29,16 +42,24 @@ void Function::remove(BasicBlock *bb)
 
 void Function::output() const
 {
+    
     FunctionType* funcType = dynamic_cast<FunctionType*>(sym_ptr->getType());
     Type *retType = funcType->getRetType();
-    std::vector<Type *> paratype=funcType->getParaType();
     fprintf(yyout, "define %s %s(", retType->toStr().c_str(), sym_ptr->toStr().c_str());
-    std::vector<Type *>::iterator iter;
-    for(iter = paratype.begin(); iter != paratype.end(); iter++){
-        if(iter + 1 == paratype.end())
-            fprintf(yyout, "%s", (*iter)->toStr().c_str());
-        else
-            fprintf(yyout, "%s,", (*iter)->toStr().c_str());
+    if(para_list){
+        //std::cout<<"handle"<<std::endl;
+        std::vector<Type *> paratype=funcType->getParaType();
+        std::queue<SymbolEntry*> theparalist = para_list->getList();
+        std::vector<Type *>::iterator iter;
+        int i=0;
+        for(iter = paratype.begin(); iter != paratype.end(); iter++){
+            if(iter + 1 == paratype.end())
+                fprintf(yyout, "%s %s", (*iter)->toStr().c_str(),templist[i]->toStr().c_str());
+            else
+                fprintf(yyout, "%s %s,", (*iter)->toStr().c_str(),templist[i]->toStr().c_str());
+            theparalist.pop();
+            i++;
+        }
     }
     fprintf(yyout, ") {\n");
     std::set<BasicBlock *> v;

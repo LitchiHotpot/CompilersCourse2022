@@ -1,4 +1,0 @@
-test/level1-2/012_func_defn.ll:5:13: error: use of undefined value '%t11'
-  store i32 %t11, i32* %t10, align 4
-            ^
-1 error generated.

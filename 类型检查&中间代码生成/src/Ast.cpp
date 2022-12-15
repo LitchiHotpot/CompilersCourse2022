@@ -47,38 +47,48 @@ void Ast::genCode(Unit *unit)
 void FunctionDef::genCode()
 {
     Unit *unit = builder->getUnit();
-    Function *func = new Function(unit, se);
+    Function *func;
+    if(paraList->getList().empty()){
+        //std::cout<<"no para func add"<<std::endl;
+        func = new Function(unit, se, nullptr);}
+    else
+        func = new Function(unit, se, paraList);
+    
     BasicBlock *entry = func->getEntry();
     // set the insert point to the entry basicblock of this function.
     builder->setInsertBB(entry);
     
     //paralist
-    ParaList *pa_list=this->paraList;
-    std::queue<SymbolEntry*> expr_list=pa_list->getList();
-    FunctionType *functype=dynamic_cast<FunctionType *>(se->getType());
-    std::vector<Type*> para_type=functype->getParaType();
-    int i=0;
-    while(!expr_list.empty()){
-        IdentifierSymbolEntry *se_pa = dynamic_cast<IdentifierSymbolEntry *>(expr_list.front());
-        Instruction *alloca;
-        Operand *addr;
-        SymbolEntry *addr_se;
-        Type* type;
-        type = new PointerType(para_type[i]);
-        //std::cout<<para_type[i]->toStr<<std::endl;
-        addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
-        addr = new Operand(addr_se);
-        alloca = new AllocaInstruction(addr, se_pa);
-        Operand *temp1 = new Operand(se_pa); 
-        Operand *temp = new Operand(new TemporarySymbolEntry(para_type[i],SymbolTable::getLabel()));
-        new StoreInstruction(addr, temp, entry);                  
-        entry->insertFront(alloca);                                 
-        se_pa->setAddr(addr);              
-        expr_list.pop(); 
-        i++;
-        //std::cout<<"add 1 para"<<std::endl;         
+    if(!paraList->getList().empty()){
+        //std::cout<<"entry para handle"<<std::endl;
+        ParaList *pa_list=this->paraList;
+        std::queue<SymbolEntry*> expr_list=pa_list->getList();
+        FunctionType *functype=dynamic_cast<FunctionType *>(se->getType());
+        std::vector<Type*> para_type=functype->getParaType();
+        int i=0;
+        while(!expr_list.empty()){
+            IdentifierSymbolEntry *se_pa = dynamic_cast<IdentifierSymbolEntry *>(expr_list.front());
+            Instruction *alloca;
+            Instruction *store;
+            Operand *addr;
+            SymbolEntry *addr_se;
+            Type* type;
+            type = new PointerType(para_type[i]);
+            //std::cout<<para_type[i]->toStr<<std::endl;
+            addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
+            addr = new Operand(addr_se);
+            alloca = new AllocaInstruction(addr, se_pa);
+            Operand *temp1 = new Operand(se_pa); 
+            Operand *temp = new Operand(func->gettemplist()[i]);
+            store=new StoreInstruction(addr, temp, entry);                  
+            //entry->insertFront(store);    
+            entry->insertFront(alloca);                              
+            se_pa->setAddr(addr);              
+            expr_list.pop(); 
+            i++;
+            //std::cout<<"add 1 para"<<std::endl;         
+        }
     }
-
     stmt->genCode();
 
     /**
@@ -202,7 +212,7 @@ void BinaryExpr::genCode()
         true_list = merge(expr1->trueList(), expr2->trueList());
         false_list=expr2->falseList();
     }
-    else if(op >= LESS && op <= NOTEQUAL)
+    else if(op == LESS || op == EQUAL || op == NOTEQUAL || op == LESSEQ || op == MORE || op == MOREEQ)
     {
         expr1->genCode();
         expr2->genCode();
@@ -432,6 +442,7 @@ void AssignStmt::genCode()
     new StoreInstruction(addr, src, bb);
 }
 
+
 void SingelExpr::genCode()
 {
     /*
@@ -456,6 +467,12 @@ public:
     int opcode;
     if(op==MIN){
         //std::cout<<"min"<<std::endl;
+        if(!(src->getType()==TypeSystem::intType||src->getType()==TypeSystem::constintType)){
+        Operand* temp1 = new Operand(new TemporarySymbolEntry(
+            TypeSystem::intType, SymbolTable::getLabel()));
+            new ConverInstruction(1,temp1,src,bb);
+            src=temp1;
+            }
         opcode = SingleInstruction::MIN;
         new SingleInstruction(opcode,dst,src,bb);
         BasicBlock *truebb, *falsebb, *tempbb;
@@ -493,19 +510,21 @@ public:
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
     }
     else if(op==POS){
+
+        Operand* temp1 = new Operand(new TemporarySymbolEntry(
+            TypeSystem::boolType, SymbolTable::getLabel()));
+         new CmpInstruction(
+            CmpInstruction::G, temp1, src,
+            new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
+            bb);
+        
         BasicBlock *truebb, *falsebb, *tempbb;
         truebb = new BasicBlock(func);
         falsebb = new BasicBlock(func);
         tempbb = new BasicBlock(func);
-        Operand* dst_br = new Operand(new TemporarySymbolEntry(
-            TypeSystem::boolType, SymbolTable::getLabel()));
-         new CmpInstruction(
-            CmpInstruction::G, dst_br, src,
-            new Operand(new ConstantSymbolEntry(TypeSystem::intType, 0)),
-            bb);
-        true_list.push_back(new CondBrInstruction(truebb, tempbb, dst_br, bb));
+        true_list.push_back(new CondBrInstruction(truebb, tempbb, temp1, bb));
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
-        dst=dst_br;
+        dst=src;
     }
     
 }
@@ -534,6 +553,7 @@ void WhileStmt::genCode()
     Stmt->genCode();
     ExprNode* cond1 = cond;
     // ExprNode* cond1 = cond;
+    
     cond1->genCode();
     backPatch(cond1->trueList(), while_bb);
     backPatch(cond1->falseList(), end_bb);

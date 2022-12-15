@@ -1,5 +1,0 @@
-the return_type of "main" is wrong
-test/level1-2/041_while_if_test3.ll:43:1: error: expected instruction opcode
-B55:                                    ; preds = %B43
-^
-1 error generated.

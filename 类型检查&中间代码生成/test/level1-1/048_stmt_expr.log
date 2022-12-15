@@ -1,0 +1,6 @@
+type i32 and i32 mismatch in line xx
+type i32 and i32 mismatch in line xx
+test/level1-1/048_stmt_expr.ll:25:3: error: multiple definition of local value named 't1'
+  %t1 = load i32, i32* %t18, align 4
+  ^
+1 error generated.

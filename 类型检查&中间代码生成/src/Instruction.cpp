@@ -407,9 +407,11 @@ CallInstruction::CallInstruction(Operand* dst,
         dst->setDef(this);
         //std::cout<<"1"<<std::endl;
     }
-    for (auto param : params) {
-        operands.push_back(param);
-        param->addUse(this);
+    if(!params.empty()){
+        for (auto param : params) {
+            operands.push_back(param);
+            param->addUse(this);
+        }
     }
 }
 
@@ -418,17 +420,19 @@ CallInstruction::~CallInstruction() {
      operands[0]->setDef(nullptr);
     if (operands[0]->usersNum() == 0)
         delete operands[0];
-    operands[1]->removeUse(this);
+    //operands[1]->removeUse(this);
 }
 
 void CallInstruction::output() const {
     //std::cout<<"1"<<std::endl;
     fprintf(yyout, "  ");
-    if (operands[0])
+    FunctionType* functype = dynamic_cast<FunctionType*>(func->getType());
+    if (operands[0] && functype->getRetType()!=TypeSystem::voidType)
         fprintf(yyout, "%s = ", operands[0]->toStr().c_str());
     FunctionType* type = (FunctionType*)(func->getType());
     fprintf(yyout, "call %s %s(", type->getRetType()->toStr().c_str(),
             func->toStr().c_str());
+    
     for (long unsigned int i = 1; i < operands.size(); i++) {
         if (i != 1)
             fprintf(yyout, ", ");
