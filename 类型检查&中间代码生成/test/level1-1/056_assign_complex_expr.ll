@@ -34,13 +34,13 @@ B39:
   %t25 = load i32, i32* %t41, align 4
   %t26 = sub i32 %t24, %t25
   %t27 = sub nsw i32 0, %t26
-  %t86 = icmp sgt i32 %t27, 0
+  %t89 = icmp sgt i32 %t27, 0
   %t28 = add i32 %t23, %t27
   %t29 = load i32, i32* %t42, align 4
   %t30 = add i32 %t29, 2
   %t31 = srem i32 %t30, 2
   %t32 = sub nsw i32 0, %t31
-  %t99 = icmp sgt i32 %t32, 0
+  %t102 = icmp sgt i32 %t32, 0
   %t33 = sub i32 %t28, %t32
   store i32 %t33, i32* %t44, align 4
   %t35 = load i32, i32* %t44, align 4

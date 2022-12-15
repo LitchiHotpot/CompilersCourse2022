@@ -1,14 +1,7 @@
+int func(){return 1;}
 
-int main(){
-    int a;
-    int b=0;
-    a=6;
-    while(a>0){
-        a=a+1;
-        a=a-1;
-    }
-    a=1;
-    //bsjdhsa
-    putch(a);
+int main()
+{
+if (1 == 0x66 <= 077) putch(69);
     return 0;
 }

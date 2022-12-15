@@ -34,8 +34,9 @@ void Unit::output() const
         }
         i++;
     }
-    for (auto &func : func_list)
+    for (auto &func : func_list){
         func->output();
+    }
     fprintf(yyout, "declare void @putint(i32)\n");
     fprintf(yyout, "declare i32 @getint()\n");
     fprintf(yyout, "declare void @putch(i32)\n");

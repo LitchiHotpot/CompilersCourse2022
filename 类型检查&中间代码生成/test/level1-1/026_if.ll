@@ -7,9 +7,10 @@ B3:
   br i1 %t2, label %B4, label %B8
 B4:                               	; preds = %B3
   ret i32 1
+  br label %B5
 B8:                               	; preds = %B3
   br label %B5
-B5:                               	; preds = %B8
+B5:                               	; preds = %B4, %B8
   ret i32 0
 }
 declare void @putint(i32)

@@ -26,7 +26,7 @@ private:
     std::vector<TemporarySymbolEntry*> templist;
 public:
     Function(Unit *, SymbolEntry *, ParaList *);
-    ~Function();
+    //~Function();
     void insertBlock(BasicBlock *bb) { block_list.push_back(bb); };
     BasicBlock *getEntry() { return entry; };
     void remove(BasicBlock *bb);

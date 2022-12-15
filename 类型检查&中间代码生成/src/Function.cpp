@@ -25,7 +25,7 @@ Function::Function(Unit *u, SymbolEntry *s, ParaList *p)
         para_list=nullptr;
    
 }
-
+/*
 Function::~Function()
 {
     auto delete_list = block_list;
@@ -33,7 +33,7 @@ Function::~Function()
         delete i;
     parent->removeFunc(this);
 }
-
+*/
 // remove the basicblock bb from its block_list.
 void Function::remove(BasicBlock *bb)
 {

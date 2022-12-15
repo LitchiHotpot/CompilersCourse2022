@@ -11,6 +11,7 @@
     int yyerror( char const * );
     Type *funcionRetType;
     std::string funcName;
+    int ifReturn=1;
 }
 
 %code requires {
@@ -244,14 +245,23 @@ WhileStmt
 ReturnStmt
     :
     RETURN Exp SEMICOLON {
+        ifReturn=1;
         Type *retType=$2->getSymPtr()->getType();
-        if(retType->isFunc() && ((FunctionType*)retType)->getRetType()!=funcionRetType){
-            fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
+        if(retType->isFunc()){
+            if(((FunctionType*)retType)->getRetType()!=funcionRetType)
+                fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
         }
         else if(retType!=funcionRetType){
             fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
         }
         $$ = new ReturnStmt($2);
+    }
+    | RETURN SEMICOLON {
+        ifReturn=1;
+        if(funcionRetType!=TypeSystem::voidType){
+            fprintf(stderr, "the return_type of \"%s\" is wrong\n", funcName.c_str());
+        }
+        $$ = new ReturnStmt();
     }
     ;
 Exp
@@ -448,9 +458,13 @@ FuncExpr
             newParamsType.emplace_back(t);
             idList.pop();
         }
-        if(newParamsType!=paramsType){
-            fprintf(stderr, "the params of \"%s\" is wrong\n", (char*)$1);
+        int i=0;
+        while(i < paramsType.size()){
+            if(!((paramsType[i]==TypeSystem::constintType&&newParamsType[i]==TypeSystem::intType)||(paramsType[i]==TypeSystem::intType&&newParamsType[i]==TypeSystem::constintType)||paramsType[i]==newParamsType[i]))
+                fprintf(stderr, "the params of \"%s\" is wrong\n", (char*)$1);
+            i++;
         }
+        
     	$$ = new FuncExpr(se, $3);
         //delete []$1;   
     }
@@ -459,6 +473,7 @@ FuncExpr
 FuncDef
     :
     Type ID LPAREN ParaList RPAREN {
+        ifReturn=0;
         funcionRetType=$1;
         funcName=$2;
         Type *funcType;
@@ -484,6 +499,9 @@ FuncDef
         identifiers = identifiers->getPrev();
         delete top;
         //delete []$2;
+        if(ifReturn==0){
+            fprintf(stderr, "the function does not have a return\n");
+        }
     }
    
     ;

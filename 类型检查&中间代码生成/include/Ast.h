@@ -260,6 +260,7 @@ private:
 public:
     ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
     ReturnStmt(StmtNode *funcCall) : funcCall(funcCall) {};
+    ReturnStmt(){};
     void output(int level);
     void typeCheck();
     void genCode();

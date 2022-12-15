@@ -111,6 +111,8 @@ CmpInstruction::CmpInstruction(unsigned opcode, Operand *dst, Operand *src1, Ope
     operands.push_back(dst);
     operands.push_back(src1);
     operands.push_back(src2);
+    dst->setType();
+    //std::cout<<dst->getType()->toStr()<<std::endl;
     dst->setDef(this);
     src1->addUse(this);
     src2->addUse(this);
@@ -350,7 +352,7 @@ void SingleInstruction::output() const
     std::string s1, s2, op, type;
     s1 = operands[0]->toStr();
     s2 = operands[1]->toStr();
-    type = operands[0]->getType()->toStr();
+    type = operands[1]->getType()->toStr();
     switch (opcode)
     {
     case MIN:
@@ -378,6 +380,7 @@ ConverInstruction::ConverInstruction(int mo,
     mode=mo;
     operands.push_back(dst);
     operands.push_back(src);
+    dst->setintType();
     dst->setDef(this);
     src->addUse(this);
 }

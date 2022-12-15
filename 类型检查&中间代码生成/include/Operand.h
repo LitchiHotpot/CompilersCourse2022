@@ -2,6 +2,7 @@
 #define __OPERAND_H__
 
 #include "SymbolTable.h"
+#include "Type.h"
 #include <vector>
 
 class Instruction;
@@ -27,6 +28,8 @@ public:
     use_iterator use_begin() {return uses.begin();};
     use_iterator use_end() {return uses.end();};
     Type* getType() {return se->getType();};
+    void setType(){se->setType(TypeSystem::boolType);};
+    void setintType(){se->setType(TypeSystem::intType);};
     std::string toStr() const;
 };
 
