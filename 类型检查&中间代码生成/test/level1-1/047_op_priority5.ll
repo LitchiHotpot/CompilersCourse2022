@@ -58,4 +58,6 @@ B40:                               	; preds = %B39, %B84
 B84:                               	; preds = %B41
   br label %B40
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

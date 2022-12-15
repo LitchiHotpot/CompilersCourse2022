@@ -17,4 +17,6 @@ B11:
   %t10 = sub i32 %t8, %t9
   ret i32 %t10
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

@@ -5,4 +5,6 @@ B2:
   %t1 = sdiv i32 %t0, 5
   ret i32 %t1
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

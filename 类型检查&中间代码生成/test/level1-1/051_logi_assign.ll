@@ -29,4 +29,6 @@ B17:                               	; preds = %B15, %B16
   %t12 = load i32, i32* %t14, align 4
   ret i32 %t12
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

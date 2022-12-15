@@ -12,4 +12,6 @@ B9:                               	; preds = %B3
 B5:                               	; preds = %B9
   ret i32 0
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

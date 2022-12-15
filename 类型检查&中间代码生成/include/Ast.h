@@ -47,6 +47,8 @@ public:
     Operand* getOperand() {return dst;};
     SymbolEntry* getSymPtr() {return symbolEntry;};
     void genCode(){};
+    virtual void output(int level) {};
+    virtual void typeCheck() {};
 };
 
 class SingelExpr : public ExprNode

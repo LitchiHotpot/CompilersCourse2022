@@ -15,4 +15,6 @@ B9:
   %t8 = add i32 %t6, %t7
   ret i32 %t8
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

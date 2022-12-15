@@ -50,4 +50,6 @@ B39:
   call void @putint(i32 %t37)
   ret i32 0
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

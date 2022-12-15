@@ -6,4 +6,6 @@ B3:
   %t2 = srem i32 %t1, 3
   ret i32 %t2
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

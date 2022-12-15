@@ -8,4 +8,6 @@ B4:
   %t3 = sub i32 %t1, %t2
   ret i32 %t3
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

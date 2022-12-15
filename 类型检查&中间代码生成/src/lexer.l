@@ -243,7 +243,8 @@ WHITE [\t ]
     strcpy(lexeme, yytext);
     yylval.strtype = lexeme;
     std::vector<Type*> t;
-    Type* funcType = new FunctionType(TypeSystem::intType, t);
+    t.emplace_back(TypeSystem::intType);
+    Type* funcType = new FunctionType(TypeSystem::voidType, t);
     SymbolTable* st = identifiers;
     while(st->getPrev())
         st = st->getPrev();

@@ -34,4 +34,6 @@ B16:                               	; preds = %B40
   store i32 0, i32* %t14, align 4
   br label %B17
 }
-declare void @putint(i32)declare i32 @getint()declare void @punch(i32)
+declare void @putint(i32)
+declare i32 @getint()
+declare void @putch(i32)

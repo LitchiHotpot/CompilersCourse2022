@@ -530,33 +530,24 @@ public:
 }
 
 void WhileStmt::genCode()
-{
-    Function* func;
-    BasicBlock *cond_bb, *while_bb, *end_bb, *bb;
+{   BasicBlock *cond_bb,*stmt_bb,*end_bb,*bb;
     bb = builder->getInsertBB();
-    func = builder->getInsertBB()->getParent();
+    Function *func = builder->getInsertBB()->getParent();
     cond_bb = new BasicBlock(func);
-    while_bb = new BasicBlock(func);
-    end_bb = new BasicBlock(func);
-
+    stmt_bb = new BasicBlock(func) ;
+    end_bb = new BasicBlock(func) ;
     this->cond_bb = cond_bb;
-    this->end_bb = end_bb;
-
+    this->end_bb =
+    end_bb;
     new UncondBrInstruction(cond_bb, bb);
-
     builder->setInsertBB(cond_bb);
     cond->genCode();
-    backPatch(cond->trueList(), while_bb);
+    backPatch(cond->trueList(), stmt_bb);
     backPatch(cond->falseList(), end_bb);
-
-    builder->setInsertBB(while_bb);
+    builder->setInsertBB(stmt_bb);
     Stmt->genCode();
-    ExprNode* cond1 = cond;
-    // ExprNode* cond1 = cond;
-    
-    cond1->genCode();
-    backPatch(cond1->trueList(), while_bb);
-    backPatch(cond1->falseList(), end_bb);
+    stmt_bb = builder->getInsertBB();
+    new UncondBrInstruction(cond_bb, stmt_bb);
     builder->setInsertBB(end_bb);
 
 }
