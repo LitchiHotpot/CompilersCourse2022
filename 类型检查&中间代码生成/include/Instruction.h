@@ -144,7 +144,7 @@ class CallInstruction : public Instruction {
     SymbolEntry* func;
     Operand* dst;
    public:
-    CallInstruction(Operand* dst1,SymbolEntry* func1,std::vector<Operand*> params,BasicBlock* insert_bb = nullptr);
+    CallInstruction(Operand* dst,SymbolEntry* func,std::vector<Operand*> params,BasicBlock* insert_bb = nullptr);
     ~CallInstruction();
     void output() const;
     Operand* getDef() { return operands[0]; }

@@ -396,16 +396,17 @@ void ConverInstruction::output() const {
         fprintf(yyout, "  %s = zext i1 %s to i32\n", dst->toStr().c_str(), src->toStr().c_str());
 }
 
-CallInstruction::CallInstruction(Operand* dst1,
-                                 SymbolEntry* func1,
+CallInstruction::CallInstruction(Operand* dst,
+                                 SymbolEntry* func,
                                  std::vector<Operand*> params,
                                  BasicBlock* insert_bb)
-    : Instruction(CALL, insert_bb){
-    this->dst=dst1;
-    this->func=func1;
+    : Instruction(CALL, insert_bb),func(func),dst(dst){
+    
     operands.push_back(dst);
-    if (dst)
+    if (dst){
         dst->setDef(this);
+        //std::cout<<"1"<<std::endl;
+        }
     for (auto param : params) {
         operands.push_back(param);
         param->addUse(this);
@@ -421,6 +422,7 @@ CallInstruction::~CallInstruction() {
 }
 
 void CallInstruction::output() const {
+    std::cout<<"1"<<std::endl;
     fprintf(yyout, "  ");
     if (operands[0])
         fprintf(yyout, "%s = ", operands[0]->toStr().c_str());

@@ -1,4 +1,0 @@
-test/level1-1/050_unary_op2.ll:45:21: error: use of undefined value '%t21'
-  %t22 = add i32 0, %t21
-                    ^
-1 error generated.

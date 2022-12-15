@@ -156,6 +156,7 @@ void BinaryExpr::genCode()
     //std::cout<<func<<std::endl;
     if (op == AND)
     {
+        //std::cout<<"1"<<std::endl;
         BasicBlock *trueBB = new BasicBlock(func);  // if the result of lhs is true, jump to the trueBB.
         expr1->genCode();
         backPatch(expr1->trueList(), trueBB);
@@ -563,10 +564,13 @@ void FuncExpr::genCode()
     std::queue<ExprNode*> templist=paraidlist->getList();
     std::vector<Operand*> operands;
     while(!templist.empty()){
+        //std::cout<<"1"<<std::endl;
         ExprNode* temp=templist.front();
         temp->genCode();
         operands.push_back(temp->getOperand());
+        templist.pop();
     }
+    std::cout<<"1"<<std::endl;
     BasicBlock* bb = builder->getInsertBB();
     new CallInstruction(dst, symbolEntry, operands, bb);
 

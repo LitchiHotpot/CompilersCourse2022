@@ -1,0 +1,3 @@
+the return_type of "main" is wrong
+timeout: the monitored command dumped core
+Segmentation fault

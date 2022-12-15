@@ -1,7 +1,0 @@
-@a = global i32 10, align 4
-define i32 @main() {
-B2:
-  %t0 = load i32, i32* @a, align 4
-  %t1 = sdiv i32 %t0, 5
-  ret i32 %t1
-}
