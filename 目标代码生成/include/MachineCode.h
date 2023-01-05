@@ -75,6 +75,8 @@ public:
     MachineBlock* getParent() {return parent;}
     std::vector<MachineOperand*>& getDef() {return def_list;};
     std::vector<MachineOperand*>& getUse() {return use_list;};
+    void insertBefore(MachineInstruction*);
+    void insertAfter(MachineInstruction*);
 };
 
 class BinaryMInstruction : public MachineInstruction
@@ -140,9 +142,7 @@ class StackMInstrcuton : public MachineInstruction
 {
 public:
     enum opType { PUSH, POP };
-    StackMInstrcuton(MachineBlock* p, int op, 
-                MachineOperand* src,
-                int cond = MachineInstruction::NONE);
+    StackMInstrcuton(MachineBlock* p, int op, std::vector<MachineOperand*> srcs, MachineOperand* src, MachineOperand* src1 = nullptr, int cond = MachineInstruction::NONE);
     void output();
 };
 
@@ -185,6 +185,7 @@ public:
     std::vector<MachineBlock*>::iterator begin() { return block_list.begin(); };
     std::vector<MachineBlock*>::iterator end() { return block_list.end(); };
     MachineFunction(MachineUnit* p, SymbolEntry* sym_ptr);
+    std::vector<MachineOperand*> getSavedRegs();
     /* HINT:
     * Alloc stack space for local variable;
     * return current frame offset ;

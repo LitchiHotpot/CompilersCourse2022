@@ -612,6 +612,21 @@ void BinaryInstruction::genMachineCode(AsmBuilder* builder)
     case ADD:
         cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::ADD, dst, src1, src2);
         break;
+    case SUB:
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::SUB, dst, src1, src2);
+        break;
+    case AND:
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::AND, dst, src1, src2);
+        break;
+    case OR:
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::OR, dst, src1, src2);
+        break;
+    case MUL:
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::MUL, dst, src1, src2);
+        break;
+    case DIV:
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::DIV, dst, src1, src2);
+        break;
     default:
         break;
     }
@@ -626,6 +641,10 @@ void CmpInstruction::genMachineCode(AsmBuilder* builder)
 void UncondBrInstruction::genMachineCode(AsmBuilder* builder)
 {
     // TODO
+    MachineBlock *cur_block = builder->getBlock();
+    std::string temp =".L" + std::to_string(branch->getNo());
+    //br to .L NO
+    cur_block->InsertInst(new BranchMInstruction(cur_block, BranchMInstruction::B, new MachineOperand(temp)));
 }
 
 void CondBrInstruction::genMachineCode(AsmBuilder* builder)

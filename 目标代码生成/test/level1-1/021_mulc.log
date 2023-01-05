@@ -1,0 +1,2 @@
+test/level1-1/021_mulc.s: Assembler messages:
+test/level1-1/021_mulc.s:13: Error: ARM register expected -- `mul r0,r0,#5'

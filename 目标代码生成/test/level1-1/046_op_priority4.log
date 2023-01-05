@@ -1,0 +1,2 @@
+test/level1-1/046_op_priority4.s: Assembler messages:
+test/level1-1/046_op_priority4.s:20: Error: ARM register expected -- `str v9,[r0]'

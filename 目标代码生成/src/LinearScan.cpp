@@ -162,8 +162,29 @@ void LinearScan::computeLiveIntervals()
 bool LinearScan::linearScanRegisterAllocation()
 {
     // Todo
-
-    return true;
+    bool success = true;
+    active.clear();
+    regs.clear();
+    for (int i = 4; i < 11; i++)
+        regs.push_back(i);
+    for (auto& i : intervals) 
+    {
+        expireOldIntervals(i);
+        
+        if (regs.empty())
+        {
+            spillAtInterval(i);
+            success = false;
+        } 
+        else 
+        {
+            i->rreg = regs.front();
+            regs.erase(regs.begin());
+            active.push_back(i);
+            sort(active.begin(), active.end(), compareEnd);
+        }
+    }
+    return success;
 }
 
 void LinearScan::modifyCode()
@@ -190,20 +211,56 @@ void LinearScan::genSpillCode()
          * 1. insert ldr inst before the use of vreg
          * 2. insert str inst after the def of vreg
          */ 
+        interval->disp = -func->AllocSpace(4);
+        auto off = new MachineOperand(MachineOperand::IMM, interval->disp);
+        auto fp = new MachineOperand(MachineOperand::REG, 11);
+        for (auto use : interval->uses) 
+        {
+            MachineOperand* temp = new MachineOperand(*use);
+            auto inst = new LoadMInstruction(use->getParent()->getParent(), temp, fp, off);
+            use->getParent()->insertBefore(inst);
+        }
+        for (auto def : interval->defs) 
+        {
+            MachineOperand* temp = new MachineOperand(*def);
+            auto inst = new StoreMInstruction(def->getParent()->getParent(), temp, fp, off);
+            def->getParent()->insertAfter(inst);
+        }
     }
 }
 
 void LinearScan::expireOldIntervals(Interval *interval)
 {
     // Todo
+    auto it = active.begin();
+    while (it != active.end()) {
+        if ((*it)->end >= interval->start)
+            return;
+        regs.push_back((*it)->rreg);
+        it = active.erase(find(active.begin(), active.end(), *it));
+        sort(regs.begin(), regs.end());
+    }
 }
 
 void LinearScan::spillAtInterval(Interval *interval)
 {
     // Todo
+    auto spill = active.back();
+    if (spill->end > interval->end) {
+        spill->spill = true;
+        interval->rreg = spill->rreg;
+        active.push_back(interval);
+        sort(active.begin(), active.end(), compareEnd);
+    } else {
+        interval->spill = true;
+    }
 }
 
 bool LinearScan::compareStart(Interval *a, Interval *b)
 {
     return a->start < b->start;
+}
+
+bool LinearScan::compareEnd(Interval* a, Interval* b) {
+    return a->end < b->end;
 }

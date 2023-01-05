@@ -1,0 +1,2 @@
+test/level1-1/008_const_var_defn.s: Assembler messages:
+test/level1-1/008_const_var_defn.s:11: Error: internal_relocation (type: OFFSET_IMM) not fixed up

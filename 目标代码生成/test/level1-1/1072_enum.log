@@ -1,0 +1,2 @@
+test/level1-1/1072_enum.s: Assembler messages:
+test/level1-1/1072_enum.s:57: Error: garbage following instruction -- `sdiv r0,r0,#2'

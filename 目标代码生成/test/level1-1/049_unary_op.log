@@ -1,0 +1,2 @@
+test/level1-1/049_unary_op.s: Assembler messages:
+test/level1-1/049_unary_op.s:15: Error: ARM register expected -- `str v10,[fp,#-4]'

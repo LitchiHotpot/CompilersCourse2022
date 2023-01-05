@@ -1,0 +1,3 @@
+test/level1-1/026_if.s: Assembler messages:
+test/level1-1/026_if.s:12: Error: internal_relocation (type: OFFSET_IMM) not fixed up
+test/level1-1/026_if.s:14: Error: internal_relocation (type: OFFSET_IMM) not fixed up

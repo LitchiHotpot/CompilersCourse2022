@@ -140,6 +140,50 @@ void BinaryMInstruction::output()
         fprintf(yyout, "\n");
         break;
     case BinaryMInstruction::SUB:
+        fprintf(yyout, "\tsub ");
+        this->PrintCond();
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
+        break;
+    case BinaryMInstruction::AND:
+        fprintf(yyout, "\tand ");
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
+        break;
+    case BinaryMInstruction::OR:
+        fprintf(yyout, "\torr ");
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
+        break;
+    case BinaryMInstruction::MUL:
+        fprintf(yyout, "\tmul ");
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
+        break;
+    case BinaryMInstruction::DIV:
+        fprintf(yyout, "\tsdiv ");
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
         break;
     default:
         break;
@@ -238,11 +282,26 @@ MovMInstruction::MovMInstruction(MachineBlock* p, int op,
     int cond)
 {
     // TODO
+    this->parent = p;
+    this->type = MachineInstruction::MOV;
+    this->op = op;
+    this->cond = cond;
+    this->def_list.push_back(dst);
+    this->use_list.push_back(src);
+    dst->setParent(this);
+    src->setParent(this);
 }
 
 void MovMInstruction::output() 
 {
     // TODO
+    fprintf(yyout, "\tmov");
+    PrintCond();
+    fprintf(yyout, " ");
+    this->def_list[0]->output();
+    fprintf(yyout, ", ");
+    this->use_list[0]->output();
+    fprintf(yyout, "\n");
 }
 
 BranchMInstruction::BranchMInstruction(MachineBlock* p, int op, 
@@ -250,11 +309,41 @@ BranchMInstruction::BranchMInstruction(MachineBlock* p, int op,
     int cond)
 {
     // TODO
+    this->type = MachineInstruction::BRANCH;
+    this->cond = cond;
+    this->parent = p;
+    this->op = op;
+    this->use_list.push_back(dst);
+    dst->setParent(this);
 }
 
 void BranchMInstruction::output()
 {
     // TODO
+    switch (op) 
+    {
+        case B:
+            fprintf(yyout, "\tb");
+            PrintCond();
+            fprintf(yyout, " ");
+            this->use_list[0]->output();
+            fprintf(yyout, "\n");
+            break;
+        case BX:
+            fprintf(yyout, "\tbx");
+            PrintCond();
+            fprintf(yyout, " ");
+            this->use_list[0]->output();
+            fprintf(yyout, "\n");
+            break;
+        case BL:
+            fprintf(yyout, "\tbl");
+            PrintCond();
+            fprintf(yyout, " ");
+            this->use_list[0]->output();
+            fprintf(yyout, "\n");
+            break;
+    }
 }
 
 CmpMInstruction::CmpMInstruction(MachineBlock* p, 
@@ -271,16 +360,49 @@ void CmpMInstruction::output()
     // delete it after test
 }
 
-StackMInstrcuton::StackMInstrcuton(MachineBlock* p, int op, 
-    MachineOperand* src,
-    int cond)
+StackMInstrcuton::StackMInstrcuton(MachineBlock* p, int op, std::vector<MachineOperand*> srcs, MachineOperand* src, MachineOperand* src1, int cond) 
 {
-    // TODO
+    this->parent = p;
+    this->type = MachineInstruction::STACK;
+    this->op = op;
+    this->cond = cond;
+    if (srcs.size() != 0)
+    {
+        for (long unsigned int i = 0; i != srcs.size(); i++)
+        {
+            this->use_list.push_back(srcs[i]);
+        }
+    }
+    this->use_list.push_back(src);
+    src->setParent(this);
+    if (src1 != nullptr) 
+    {
+        this->use_list.push_back(src1);
+        src1->setParent(this);
+    }
 }
 
 void StackMInstrcuton::output()
 {
-    // TODO
+    switch (op) 
+    {
+        case PUSH:
+            fprintf(yyout, "\tpush ");
+            break;
+        case POP:
+            fprintf(yyout, "\tpop ");
+            break;
+    }
+    fprintf(yyout, "{");
+    this->use_list[0]->output();
+    long unsigned int index = 1;
+    while (index < use_list.size()) 
+    {
+        fprintf(yyout, ", ");
+        this->use_list[index]->output();
+        index++;
+    }
+    fprintf(yyout, "}\n");
 }
 
 MachineFunction::MachineFunction(MachineUnit* p, SymbolEntry* sym_ptr) 
@@ -311,8 +433,29 @@ void MachineFunction::output()
     *  4. Allocate stack space for local variable */
     
     // Traverse all the block in block_list to print assembly code.
+    MachineOperand *fp = new MachineOperand(MachineOperand::REG, 11);
+    MachineOperand *sp = new MachineOperand(MachineOperand::REG, 13);
+    MachineOperand *lr = new MachineOperand(MachineOperand::REG, 14);
+    (new StackMInstrcuton(nullptr, StackMInstrcuton::PUSH, getSavedRegs(), fp, lr)) ->output();
+    (new MovMInstruction(nullptr, MovMInstruction::MOV, fp, sp))->output();
+
+    (new BinaryMInstruction(nullptr, BinaryMInstruction::SUB, sp, sp, new MachineOperand(MachineOperand::IMM, AllocSpace(0))))->output();
+    
     for(auto iter : block_list)
         iter->output();
+    
+    //(new StackMInstrcuton(nullptr, StackMInstrcuton::POP, getSavedRegs(), fp, lr)) ->output();
+}
+
+std::vector<MachineOperand*> MachineFunction::getSavedRegs() 
+{
+    std::vector<MachineOperand*> regs;
+    for (std::set<int>::iterator it = saved_regs.begin(); it != saved_regs.end(); it++) 
+    {
+        MachineOperand * reg = new MachineOperand(MachineOperand::REG, *it);
+        regs.push_back(reg);
+    }
+    return regs;
 }
 
 void MachineUnit::PrintGlobalDecl()
@@ -336,4 +479,19 @@ void MachineUnit::output()
     for(auto iter : func_list){
         iter->output();
     }
+}
+
+
+void MachineInstruction::insertBefore(MachineInstruction* inst) 
+{
+    std::vector<MachineInstruction *> &instructions = parent->getInsts();
+    std::vector<MachineInstruction *>::iterator it = std::find(instructions.begin(), instructions.end(), this);
+    instructions.insert(it, inst);
+}
+
+void MachineInstruction::insertAfter(MachineInstruction* inst) 
+{
+    std::vector<MachineInstruction *> &instructions = parent->getInsts();
+    std::vector<MachineInstruction *>::iterator it = std::find(instructions.begin(), instructions.end(), this);
+    instructions.insert(++it, inst);
 }

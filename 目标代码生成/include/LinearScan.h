@@ -32,7 +32,9 @@ private:
     std::vector<int> regs;
     std::map<MachineOperand *, std::set<MachineOperand *>> du_chains;
     std::vector<Interval*> intervals;
+    std::vector<Interval*> active;
     static bool compareStart(Interval*a, Interval*b);
+    static bool compareEnd(Interval* a, Interval* b);
     void expireOldIntervals(Interval *interval);
     void spillAtInterval(Interval *interval);
     void makeDuChains();
