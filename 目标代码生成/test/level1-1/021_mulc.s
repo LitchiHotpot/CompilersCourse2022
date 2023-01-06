@@ -9,6 +9,7 @@
 .size a, 4
 a:
 	.word 5
+	.text
 	.global main
 	.type main , %function
 main:

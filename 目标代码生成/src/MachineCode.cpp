@@ -656,6 +656,7 @@ void MachineUnit::output()
     fprintf(yyout, "\t.arch_extension crc\n");
     fprintf(yyout, "\t.arm\n");
     PrintGlobalDecl();
+    fprintf(yyout, "\t.text\n");
     if(func_list.empty()) std::cout<<"empty function list"<<std::endl;
     for(auto iter : func_list){
         iter->output();

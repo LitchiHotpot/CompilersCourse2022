@@ -23,6 +23,7 @@ d:
 .size e, 4
 e:
 	.word 4
+	.text
 	.global main
 	.type main , %function
 main:

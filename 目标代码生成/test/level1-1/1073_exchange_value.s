@@ -7,6 +7,7 @@
 .size n, 4
 n:
 	.word 0
+	.text
 	.global main
 	.type main , %function
 main:
