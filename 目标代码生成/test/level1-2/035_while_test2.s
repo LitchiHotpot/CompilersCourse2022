@@ -19,20 +19,17 @@ FourWhile:
 	b .L46
 .L46:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =20
-	cmp r4, r5
+	cmp r4, #20
 	movlt r4, #1
 	movge r4, #0
 	blt .L47
 	b .L55
 .L47:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =3
@@ -41,25 +38,21 @@ FourWhile:
 	b .L63
 .L48:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-12]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, [fp, #-4]
-	ldr r7, =0
-	cmp r6, r7
+	cmp r6, #0
 	movgt r7, #1
 	movle r7, #0
 	add r7, r5, r6
 	add r5, r4, r7
 	ldr r4, [fp, #-8]
-	ldr r6, =0
-	cmp r4, r6
+	cmp r4, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r5, r4
@@ -92,20 +85,17 @@ FourWhile:
 	b .L61
 .L63:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
 	movlt r4, #1
 	movge r4, #0
 	blt .L64
 	b .L72
 .L64:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -114,8 +104,7 @@ FourWhile:
 	b .L80
 .L65:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -147,18 +136,17 @@ FourWhile:
 	b .L78
 .L80:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =7
-	cmp r4, r5
+	cmp r4, #7
+	moveq r4, #1
+	movne r4, #0
 	beq .L81
 	b .L89
 .L81:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -167,8 +155,7 @@ FourWhile:
 	b .L97
 .L82:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -200,20 +187,17 @@ FourWhile:
 	b .L95
 .L97:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =20
-	cmp r4, r5
+	cmp r4, #20
 	movlt r4, #1
 	movge r4, #0
 	blt .L98
 	b .L106
 .L98:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =3
@@ -222,8 +206,7 @@ FourWhile:
 	b .L97
 .L99:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -353,8 +336,7 @@ main:
 .L160:
 	bl FourWhile
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

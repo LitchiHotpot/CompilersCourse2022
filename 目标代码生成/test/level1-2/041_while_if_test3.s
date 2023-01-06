@@ -11,13 +11,11 @@ deepWhileBr:
 	str r0, [fp, #-20]
 	str r1, [fp, #-16]
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r4, r5
@@ -46,12 +44,10 @@ deepWhileBr:
 	b .L42
 .L44:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =75
-	cmp r4, r5
+	cmp r4, #75
 	movlt r4, #1
 	movge r4, #0
 	blt .L45
@@ -60,20 +56,17 @@ deepWhileBr:
 	ldr r4, =42
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =100
-	cmp r4, r5
+	cmp r4, #100
 	movlt r4, #1
 	movge r4, #0
 	blt .L55
 	b .L63
 .L46:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -91,24 +84,20 @@ deepWhileBr:
 	b .L46
 .L55:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r4, r5
 	str r6, [fp, #-12]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =99
-	cmp r4, r5
+	cmp r4, #99
 	movgt r4, #1
 	movle r4, #0
 	bgt .L75
@@ -147,16 +136,16 @@ deepWhileBr:
 	b .L73
 .L75:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
 	mul r6, r4, r5
 	str r6, [fp, #-4]
 	ldr r4, =1
-	ldr r5, =1
-	cmp r4, r5
+	cmp r4, #1
+	moveq r4, #1
+	movne r4, #0
 	beq .L92
 	b .L96
 .L76:
@@ -186,8 +175,7 @@ deepWhileBr:
 	b .L90
 .L92:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -229,21 +217,18 @@ main:
 	ldr r4, =2
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-4]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	mov r0, r4
 	mov r1, r5
 	bl deepWhileBr
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

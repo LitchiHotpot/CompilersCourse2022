@@ -13,12 +13,12 @@ ifWhile:
 	ldr r4, =3
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =5
-	cmp r4, r5
+	cmp r4, #5
+	moveq r4, #1
+	movne r4, #0
 	beq .L25
 	b .L34
 .L25:
@@ -27,8 +27,7 @@ ifWhile:
 	b .L59
 .L27:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -46,18 +45,17 @@ ifWhile:
 	b .L26
 .L35:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =2
-	cmp r4, r5
+	cmp r4, #2
+	moveq r4, #1
+	movne r4, #0
 	beq .L36
 	b .L44
 .L36:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -66,8 +64,7 @@ ifWhile:
 	b .L35
 .L37:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =25
@@ -113,28 +110,24 @@ ifWhile:
 	b .L57
 .L59:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =5
-	cmp r4, r5
+	cmp r4, #5
 	movlt r4, #1
 	movge r4, #0
 	blt .L60
 	b .L68
 .L60:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
 	mul r6, r4, r5
 	str r6, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -196,8 +189,7 @@ main:
 .L87:
 	bl ifWhile
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

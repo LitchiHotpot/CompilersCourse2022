@@ -17,12 +17,10 @@ main:
 	b .L43
 .L43:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =21
-	cmp r4, r5
+	cmp r4, #21
 	movlt r4, #1
 	movge r4, #0
 	blt .L44
@@ -45,13 +43,11 @@ main:
 	b .L45
 .L53:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =101
@@ -63,50 +59,45 @@ main:
 	b .L69
 .L54:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =100
 	sub r6, r5, r4
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	sub r5, r6, r4
 	str r5, [fp, #-8]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =5
 	mul r6, r5, r4
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
 	mul r7, r5, r4
 	add r4, r6, r7
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =2
 	sdiv r7, r5, r6
 	add r5, r4, r7
-	ldr r4, =100
-	cmp r5, r4
+	cmp r5, #100
+	moveq r4, #1
+	movne r4, #0
 	beq .L84
 	b .L115
 .L55:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -166,24 +157,21 @@ main:
 	b .L82
 .L84:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
 	bl putint
 	mov r4, r0
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
 	bl putint
 	mov r4, r0
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -192,8 +180,7 @@ main:
 	ldr r4, =10
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -202,8 +189,7 @@ main:
 	b .L85
 .L85:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1

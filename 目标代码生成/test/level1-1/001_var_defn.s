@@ -20,14 +20,12 @@ main:
 .L3:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_b
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	add r4, r5, r6

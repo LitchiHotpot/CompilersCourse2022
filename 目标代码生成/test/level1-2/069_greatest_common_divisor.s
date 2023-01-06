@@ -13,25 +13,21 @@ fun:
 	b .L27
 .L27:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L28
 	b .L36
 .L28:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	sdiv r6, r4, r5
@@ -39,22 +35,19 @@ fun:
 	sub r6, r4, r5
 	str r6, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	b .L27
 .L29:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -121,40 +114,34 @@ main:
 .L60:
 	bl getint
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	bl getint
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-12]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	mov r0, r4
 	mov r1, r5
 	bl fun
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

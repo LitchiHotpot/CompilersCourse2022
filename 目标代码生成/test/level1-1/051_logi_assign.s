@@ -20,33 +20,31 @@ main:
 .L13:
 	bl getint
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_a
 	str r4, [r5]
 	bl getint
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_b
 	str r4, [r5]
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_b
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	cmp r5, r6
+	moveq r4, #1
+	movne r4, #0
 	beq .L26
 	b .L37
 .L15:
@@ -73,8 +71,7 @@ main:
 	b .L25
 .L25:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -84,12 +81,12 @@ main:
 .L26:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =3
-	cmp r5, r4
+	cmp r5, #3
+	movne r4, #1
+	moveq r4, #0
 	bne .L23
 	b .L44
 .L28:

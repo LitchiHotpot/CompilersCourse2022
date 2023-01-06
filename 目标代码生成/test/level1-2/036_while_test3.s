@@ -37,20 +37,17 @@ EightWhile:
 	b .L90
 .L90:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =20
-	cmp r4, r5
+	cmp r4, #20
 	movlt r4, #1
 	movge r4, #0
 	blt .L91
 	b .L99
 .L91:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =3
@@ -59,51 +56,43 @@ EightWhile:
 	b .L107
 .L92:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-12]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, [fp, #-4]
-	ldr r7, =0
-	cmp r6, r7
+	cmp r6, #0
 	movgt r7, #1
 	movle r7, #0
 	add r7, r5, r6
 	add r5, r4, r7
 	ldr r4, [fp, #-8]
-	ldr r6, =0
-	cmp r4, r6
+	cmp r4, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r5, r4
 	ldr r4, addr_e
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, [fp, #-4]
-	ldr r7, =0
-	cmp r4, r7
+	cmp r4, #0
 	movgt r7, #1
 	movle r7, #0
 	add r7, r5, r4
 	ldr r4, addr_g
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	sub r4, r7, r5
 	ldr r5, addr_h
 	ldr r7, [r5]
-	ldr r5, =0
-	cmp r7, r5
+	cmp r7, #0
 	movgt r5, #1
 	movle r5, #0
 	add r5, r4, r7
@@ -137,20 +126,17 @@ EightWhile:
 	b .L105
 .L107:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
 	movlt r4, #1
 	movge r4, #0
 	blt .L108
 	b .L116
 .L108:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -159,8 +145,7 @@ EightWhile:
 	b .L124
 .L109:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -192,18 +177,17 @@ EightWhile:
 	b .L122
 .L124:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =7
-	cmp r4, r5
+	cmp r4, #7
+	moveq r4, #1
+	movne r4, #0
 	beq .L125
 	b .L133
 .L125:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -212,8 +196,7 @@ EightWhile:
 	b .L141
 .L126:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -245,20 +228,17 @@ EightWhile:
 	b .L139
 .L141:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =20
-	cmp r4, r5
+	cmp r4, #20
 	movlt r4, #1
 	movge r4, #0
 	blt .L142
 	b .L150
 .L142:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =3
@@ -267,8 +247,7 @@ EightWhile:
 	b .L158
 .L143:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -301,12 +280,10 @@ EightWhile:
 .L158:
 	ldr r4, addr_e
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =1
-	cmp r5, r4
+	cmp r5, #1
 	movgt r4, #1
 	movle r4, #0
 	bgt .L159
@@ -314,8 +291,7 @@ EightWhile:
 .L159:
 	ldr r4, addr_e
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =1
@@ -326,8 +302,7 @@ EightWhile:
 .L160:
 	ldr r4, addr_e
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =1
@@ -361,12 +336,10 @@ EightWhile:
 .L175:
 	ldr r4, addr_f
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =2
-	cmp r5, r4
+	cmp r5, #2
 	movgt r4, #1
 	movle r4, #0
 	bgt .L176
@@ -374,8 +347,7 @@ EightWhile:
 .L176:
 	ldr r4, addr_f
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =2
@@ -386,8 +358,7 @@ EightWhile:
 .L177:
 	ldr r4, addr_f
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =1
@@ -421,12 +392,10 @@ EightWhile:
 .L192:
 	ldr r4, addr_g
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =3
-	cmp r5, r4
+	cmp r5, #3
 	movlt r4, #1
 	movge r4, #0
 	blt .L193
@@ -434,8 +403,7 @@ EightWhile:
 .L193:
 	ldr r4, addr_g
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =10
@@ -446,8 +414,7 @@ EightWhile:
 .L194:
 	ldr r4, addr_g
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =8
@@ -481,12 +448,10 @@ EightWhile:
 .L209:
 	ldr r4, addr_h
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =10
-	cmp r5, r4
+	cmp r5, #10
 	movlt r4, #1
 	movge r4, #0
 	blt .L210
@@ -494,8 +459,7 @@ EightWhile:
 .L210:
 	ldr r4, addr_h
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =8
@@ -506,8 +470,7 @@ EightWhile:
 .L211:
 	ldr r4, addr_h
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =1
@@ -762,8 +725,7 @@ main:
 	str r4, [r5]
 	bl EightWhile
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

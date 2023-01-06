@@ -17,25 +17,21 @@ main:
 	ldr r4, =2
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, [fp, #-12]
-	ldr r7, =0
-	cmp r6, r7
+	cmp r6, #0
 	movgt r7, #1
 	movle r7, #0
 	mul r7, r5, r6
 	add r5, r4, r7
 	ldr r4, [fp, #-4]
-	ldr r6, =0
-	cmp r4, r6
+	cmp r4, #0
 	movgt r6, #1
 	movle r6, #0
 	sub r6, r5, r4

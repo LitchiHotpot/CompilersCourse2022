@@ -20,16 +20,16 @@ get_ans_se:
 	ldr r4, =0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
+	moveq r4, #1
+	movne r4, #0
 	beq .L174
 	b .L186
 .L174:
@@ -38,42 +38,36 @@ get_ans_se:
 	b .L175
 .L175:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
 	mul r6, r4, r5
 	str r6, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-4]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r4, r5
 	str r6, [fp, #-16]
 	ldr r4, addr_s
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, [fp, #-16]
-	ldr r6, =0
-	cmp r4, r6
+	cmp r4, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r5, r4
 	ldr r4, addr_s
 	str r6, [r4]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -172,16 +166,16 @@ get_ans:
 	ldr r4, =0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
+	moveq r4, #1
+	movne r4, #0
 	beq .L228
 	b .L240
 .L228:
@@ -190,28 +184,24 @@ get_ans:
 	b .L229
 .L229:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
 	mul r6, r4, r5
 	str r6, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-4]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r4, r5
 	str r6, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -286,8 +276,7 @@ main:
 	ldr r4, =-2147483648
 	ldr r5, =0
 	sub r6, r5, r4
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	str r6, [fp, #-36]
@@ -310,14 +299,12 @@ main:
 	mov r2, r5
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -329,22 +316,19 @@ main:
 	mov r2, r5
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
 	ldr r6, [fp, #-24]
 	ldr r7, =0
 	sub r8, r7, r6
-	ldr r6, =0
-	cmp r8, r6
+	cmp r8, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =1
@@ -354,14 +338,12 @@ main:
 	mov r2, r7
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -373,14 +355,12 @@ main:
 	mov r2, r8
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
@@ -394,39 +374,34 @@ main:
 	mov r2, r8
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
 	ldr r6, [fp, #-24]
-	ldr r8, =0
-	sub r7, r8, r6
-	ldr r6, =0
-	cmp r7, r6
+	ldr r7, =0
+	sub r8, r7, r6
+	cmp r8, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =1
-	sub r8, r7, r6
+	sub r7, r8, r6
 	mov r0, r4
 	mov r1, r5
-	mov r2, r8
+	mov r2, r7
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
@@ -438,8 +413,7 @@ main:
 	mov r2, r8
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-16]
@@ -450,14 +424,12 @@ main:
 	mov r2, r5
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-28]
@@ -467,14 +439,12 @@ main:
 	mov r2, r6
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-24]
@@ -484,14 +454,12 @@ main:
 	mov r2, r6
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -505,8 +473,7 @@ main:
 	mov r2, r8
 	bl get_ans
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-12]
@@ -517,14 +484,12 @@ main:
 	mov r2, r5
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -536,39 +501,34 @@ main:
 	mov r2, r5
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
 	ldr r6, [fp, #-24]
-	ldr r8, =0
-	sub r7, r8, r6
-	ldr r6, =0
-	cmp r7, r6
+	ldr r7, =0
+	sub r8, r7, r6
+	cmp r8, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =1
-	sub r8, r7, r6
+	sub r7, r8, r6
 	mov r0, r4
 	mov r1, r5
-	mov r2, r8
+	mov r2, r7
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -580,14 +540,12 @@ main:
 	mov r2, r8
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
@@ -601,39 +559,34 @@ main:
 	mov r2, r8
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
 	ldr r6, [fp, #-24]
-	ldr r8, =0
-	sub r7, r8, r6
-	ldr r6, =0
-	cmp r7, r6
+	ldr r7, =0
+	sub r8, r7, r6
+	cmp r8, #0
 	movgt r6, #1
 	movle r6, #0
 	ldr r6, =1
-	sub r8, r7, r6
+	sub r7, r8, r6
 	mov r0, r4
 	mov r1, r5
-	mov r2, r8
+	mov r2, r7
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-32]
@@ -645,8 +598,7 @@ main:
 	mov r2, r8
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-8]
@@ -657,14 +609,12 @@ main:
 	mov r2, r5
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-28]
@@ -674,14 +624,12 @@ main:
 	mov r2, r6
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-24]
@@ -691,14 +639,12 @@ main:
 	mov r2, r6
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-36]
@@ -712,31 +658,26 @@ main:
 	mov r2, r8
 	bl get_ans_se
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-12]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r4, r5
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	add r5, r6, r4
 	ldr r4, [fp, #-4]
-	ldr r6, =0
-	cmp r4, r6
+	cmp r4, #0
 	movgt r6, #1
 	movle r6, #0
 	add r6, r5, r4

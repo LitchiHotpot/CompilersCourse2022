@@ -28,8 +28,7 @@ main:
 	b .L19
 .L19:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_n
@@ -43,8 +42,7 @@ main:
 	b .L34
 .L20:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -52,22 +50,19 @@ main:
 	str r6, [fp, #-4]
 	ldr r4, addr_k
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, =1
 	add r6, r5, r4
 	ldr r4, addr_k
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_k
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	add r4, r5, r6
@@ -77,8 +72,7 @@ main:
 .L21:
 	ldr r4, addr_k
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -86,8 +80,7 @@ main:
 	mov r4, r0
 	ldr r4, addr_k
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5

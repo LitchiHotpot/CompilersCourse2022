@@ -13,28 +13,27 @@ if_if_Else:
 	ldr r4, =10
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =5
-	cmp r4, r5
+	cmp r4, #5
+	moveq r4, #1
+	movne r4, #0
 	beq .L15
 	b .L24
 .L15:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
+	moveq r4, #1
+	movne r4, #0
 	beq .L25
 	b .L33
 .L16:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =15
@@ -43,8 +42,7 @@ if_if_Else:
 	b .L17
 .L17:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -105,8 +103,7 @@ main:
 .L45:
 	bl if_if_Else
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

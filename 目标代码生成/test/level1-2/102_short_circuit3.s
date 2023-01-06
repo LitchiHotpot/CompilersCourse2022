@@ -24,16 +24,14 @@ set_a:
 .L122:
 	str r0, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_a
 	str r4, [r5]
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -63,16 +61,14 @@ set_b:
 .L133:
 	str r0, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_b
 	str r4, [r5]
 	ldr r4, addr_b
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -102,16 +98,14 @@ set_d:
 .L144:
 	str r0, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_d
 	str r4, [r5]
 	ldr r4, addr_d
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -148,8 +142,7 @@ main:
 	ldr r0, =0
 	bl set_a
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L158
@@ -159,8 +152,7 @@ main:
 .L157:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -171,8 +163,7 @@ main:
 	mov r4, r0
 	ldr r4, addr_b
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -190,8 +181,7 @@ main:
 	ldr r0, =0
 	bl set_a
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L189
@@ -200,8 +190,7 @@ main:
 	ldr r0, =1
 	bl set_b
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L156
@@ -229,8 +218,7 @@ main:
 .L188:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -241,8 +229,7 @@ main:
 	mov r4, r0
 	ldr r4, addr_b
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -257,8 +244,7 @@ main:
 	ldr r5, addr_d
 	str r4, [r5]
 	ldr r4, [fp, #-24]
-	ldr r5, =1
-	cmp r4, r5
+	cmp r4, #1
 	movge r4, #1
 	movlt r4, #0
 	bge .L221
@@ -267,8 +253,7 @@ main:
 	ldr r0, =1
 	bl set_b
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L187
@@ -296,8 +281,7 @@ main:
 .L220:
 	ldr r4, addr_d
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -307,8 +291,7 @@ main:
 	bl putch
 	mov r4, r0
 	ldr r4, [fp, #-24]
-	ldr r5, =1
-	cmp r4, r5
+	cmp r4, #1
 	movle r4, #1
 	movgt r4, #0
 	ble .L242
@@ -317,8 +300,7 @@ main:
 	ldr r0, =3
 	bl set_d
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L219
@@ -339,8 +321,7 @@ main:
 .L243:
 	ldr r4, addr_d
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	mov r0, r5
@@ -364,8 +345,7 @@ main:
 	ldr r0, =4
 	bl set_d
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L242
@@ -396,6 +376,8 @@ main:
 	ldr r4, =36
 	sub r5, r4, r7
 	cmp r6, r5
+	movne r4, #1
+	moveq r4, #0
 	bne .L279
 	b .L292
 .L268:
@@ -423,13 +405,15 @@ main:
 	ldr r4, =7
 	ldr r5, =2
 	sdiv r6, r4, r5
-	mul r6, r6, r5
-	sub r5, r4, r6
+	mul r5, r6, r5
+	sub r6, r4, r5
 	ldr r4, =8
+	cmp r4, r6
+	movne r4, #1
+	moveq r4, #0
+	mov r5, r4
+	ldr r4, =1
 	cmp r4, r5
-	mov r4, v56
-	ldr r5, =1
-	cmp r5, r4
 	movlt r4, #1
 	movge r4, #0
 	blt .L296
@@ -464,11 +448,12 @@ main:
 	b .L297
 .L297:
 	ldr r4, =4
-	ldr r5, =0
+	cmp r4, #0
+	moveq r4, #1
+	movne r4, #0
+	mov r5, r4
+	ldr r4, =3
 	cmp r4, r5
-	mov r4, v59
-	ldr r5, =3
-	cmp r5, r4
 	movgt r4, #1
 	movle r4, #0
 	bgt .L311
@@ -496,13 +481,14 @@ main:
 	b .L312
 .L312:
 	ldr r4, =102
-	ldr r5, =63
-	cmp r4, r5
+	cmp r4, #63
 	movle r4, #1
 	movgt r4, #0
 	mov r5, r4
 	ldr r4, =1
 	cmp r4, r5
+	moveq r4, #1
+	movne r4, #0
 	beq .L323
 	b .L331
 .L314:
@@ -524,19 +510,20 @@ main:
 	ldr r5, =6
 	sub r6, r4, r5
 	ldr r4, =0
+	cmp r4, #0
+	movgt r4, #1
+	movle r4, #0
+	ldr r5, =1
+	eor r7, r5, r4
+	mov r4, r7
 	ldr r5, =0
-	cmp r4, r5
+	sub r7, r5, r4
+	cmp r7, #0
 	movgt r4, #1
 	movle r4, #0
-	ldr r4, =0
-	mov r4, v66
-	ldr r7, =0
-	sub r5, r7, r4
-	ldr r4, =0
-	cmp r5, r4
-	movgt r4, #1
-	movle r4, #0
-	cmp r6, r5
+	cmp r6, r7
+	moveq r4, #1
+	movne r4, #0
 	beq .L335
 	b .L351
 .L326:
@@ -593,8 +580,7 @@ main:
 	b .L336
 .L363:
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L366
@@ -606,16 +592,14 @@ main:
 	b .L363
 .L365:
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L378
 	b .L383
 .L366:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L364
@@ -631,13 +615,11 @@ main:
 	b .L379
 .L379:
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -647,8 +629,7 @@ main:
 	b .L405
 .L380:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r4, #1
 	movle r4, #0
 	bgt .L378
@@ -664,13 +645,11 @@ main:
 	b .L393
 .L393:
 	ldr r4, [fp, #-12]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -680,13 +659,11 @@ main:
 	b .L433
 .L394:
 	ldr r4, [fp, #-16]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-20]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -733,36 +710,36 @@ main:
 	b .L421
 .L421:
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =0
-	mov r5, v97
+	ldr r6, =1
+	eor r7, r6, r5
+	mov r5, r7
 	cmp r4, r5
+	moveq r4, #1
+	movne r4, #0
 	beq .L451
 	b .L467
 .L422:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
+	movne r4, #1
+	moveq r4, #0
 	bne .L420
 	b .L444
 .L424:
@@ -804,33 +781,31 @@ main:
 	b .L449
 .L449:
 	ldr r4, [fp, #-20]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-16]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =0
-	mov r5, v110
+	ldr r6, =1
+	eor r7, r6, r5
+	mov r5, r7
 	cmp r4, r5
+	moveq r4, #1
+	movne r4, #0
 	beq .L493
 	b .L511
 .L450:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-4]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -840,13 +815,11 @@ main:
 	b .L489
 .L451:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -924,13 +897,11 @@ main:
 	bx lr
 .L495:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-8]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5
@@ -963,13 +934,11 @@ main:
 	b .L495
 .L512:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, [fp, #-4]
-	ldr r6, =0
-	cmp r5, r6
+	cmp r5, #0
 	movgt r6, #1
 	movle r6, #0
 	cmp r4, r5

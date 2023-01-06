@@ -11,12 +11,12 @@ ifElse:
 	ldr r4, =5
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =5
-	cmp r4, r5
+	cmp r4, #5
+	moveq r4, #1
+	movne r4, #0
 	beq .L11
 	b .L20
 .L11:
@@ -25,8 +25,7 @@ ifElse:
 	b .L13
 .L12:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -35,8 +34,7 @@ ifElse:
 	b .L13
 .L13:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -82,8 +80,7 @@ main:
 .L32:
 	bl ifElse
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

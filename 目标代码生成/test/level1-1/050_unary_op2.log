@@ -1,4 +1,1 @@
-test/level1-1/050_unary_op2.s: Assembler messages:
-test/level1-1/050_unary_op2.s:49: Error: immediate expression requires a # prefix -- `mov r4,v10'
-test/level1-1/050_unary_op2.s:55: Error: immediate expression requires a # prefix -- `mov r4,v11'
-test/level1-1/050_unary_op2.s:61: Error: immediate expression requires a # prefix -- `mov r4,v12'
+TOTAL: 0H-0M-0S-0us

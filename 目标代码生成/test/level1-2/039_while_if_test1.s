@@ -15,30 +15,27 @@ whileIf:
 	b .L21
 .L21:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =100
-	cmp r4, r5
+	cmp r4, #100
 	movlt r4, #1
 	movge r4, #0
 	blt .L22
 	b .L30
 .L22:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =5
-	cmp r4, r5
+	cmp r4, #5
+	moveq r4, #1
+	movne r4, #0
 	beq .L31
 	b .L40
 .L23:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -60,18 +57,17 @@ whileIf:
 	b .L33
 .L32:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
+	moveq r4, #1
+	movne r4, #0
 	beq .L41
 	b .L50
 .L33:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =1
@@ -93,8 +89,7 @@ whileIf:
 	b .L43
 .L42:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =2
@@ -156,8 +151,7 @@ main:
 .L69:
 	bl whileIf
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4

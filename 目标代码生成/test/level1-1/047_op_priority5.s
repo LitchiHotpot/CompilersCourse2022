@@ -34,38 +34,35 @@ main:
 	str r4, [fp, #-4]
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_b
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	mul r4, r5, r6
 	ldr r5, addr_c
 	ldr r6, [r5]
-	ldr r5, =0
-	cmp r6, r5
+	cmp r6, #0
 	movgt r5, #1
 	movle r5, #0
 	sdiv r5, r4, r6
 	ldr r4, addr_e
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_d
 	ldr r7, [r4]
-	ldr r4, =0
-	cmp r7, r4
+	cmp r7, #0
 	movgt r4, #1
 	movle r4, #0
 	add r4, r6, r7
 	cmp r5, r4
+	moveq r4, #1
+	movne r4, #0
 	beq .L42
 	b .L74
 .L39:
@@ -74,16 +71,14 @@ main:
 	b .L40
 .L40:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
 	bl putint
 	mov r4, r0
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -93,85 +88,75 @@ main:
 .L41:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_b
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_c
 	ldr r7, [r4]
-	ldr r4, =0
-	cmp r7, r4
+	cmp r7, #0
 	movgt r4, #1
 	movle r4, #0
 	mul r4, r6, r7
 	sub r6, r5, r4
 	ldr r4, addr_d
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_a
 	ldr r7, [r4]
-	ldr r4, =0
-	cmp r7, r4
+	cmp r7, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_c
 	ldr r8, [r4]
-	ldr r4, =0
-	cmp r8, r4
+	cmp r8, #0
 	movgt r4, #1
 	movle r4, #0
 	sdiv r4, r7, r8
 	sub r7, r5, r4
 	cmp r6, r7
+	moveq r4, #1
+	movne r4, #0
 	beq .L39
 	b .L152
 .L42:
 	ldr r4, addr_a
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_a
 	ldr r6, [r4]
-	ldr r4, =0
-	cmp r6, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
 	ldr r4, addr_b
 	ldr r7, [r4]
-	ldr r4, =0
-	cmp r7, r4
+	cmp r7, #0
 	movgt r4, #1
 	movle r4, #0
 	add r4, r6, r7
 	mul r6, r5, r4
 	ldr r4, addr_c
 	ldr r5, [r4]
-	ldr r4, =0
-	cmp r5, r4
+	cmp r5, #0
 	movgt r4, #1
 	movle r4, #0
 	add r4, r6, r5
 	ldr r5, addr_d
 	ldr r6, [r5]
-	ldr r5, =0
-	cmp r6, r5
+	cmp r6, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, addr_e
 	ldr r7, [r5]
-	ldr r5, =0
-	cmp r7, r5
+	cmp r7, #0
 	movgt r5, #1
 	movle r5, #0
 	add r5, r6, r7

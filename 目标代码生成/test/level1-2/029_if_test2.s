@@ -13,18 +13,17 @@ ifElseIf:
 	ldr r4, =10
 	str r4, [fp, #-4]
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =6
-	cmp r4, r5
+	cmp r4, #6
+	moveq r4, #1
+	movne r4, #0
 	beq .L33
 	b .L43
 .L33:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -34,18 +33,17 @@ ifElseIf:
 	b .L35
 .L34:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
+	moveq r4, #1
+	movne r4, #0
 	beq .L58
 	b .L65
 .L35:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
@@ -54,12 +52,12 @@ ifElseIf:
 	bx lr
 .L36:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =11
-	cmp r4, r5
+	cmp r4, #11
+	moveq r4, #1
+	movne r4, #0
 	beq .L33
 	b .L50
 .L38:
@@ -93,24 +91,24 @@ ifElseIf:
 	b .L57
 .L56:
 	ldr r4, [fp, #-4]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =10
-	cmp r4, r5
+	cmp r4, #10
+	moveq r4, #1
+	movne r4, #0
 	beq .L76
 	b .L83
 .L57:
 	b .L35
 .L58:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
-	ldr r5, =1
-	cmp r4, r5
+	cmp r4, #1
+	moveq r4, #1
+	movne r4, #0
 	beq .L55
 	b .L72
 .L60:
@@ -133,8 +131,7 @@ ifElseIf:
 	b .L56
 .L73:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =15
@@ -143,38 +140,35 @@ ifElseIf:
 	b .L75
 .L74:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
+	movgt r5, #1
+	movle r5, #0
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =0
-	cmp r4, r5
-	movgt r5, #1
-	movle r5, #0
-	ldr r6, =0
-	sub r5, r6, r4
-	ldr r4, =0
-	cmp r5, r4
+	sub r6, r5, r4
+	cmp r6, #0
 	movgt r4, #1
 	movle r4, #0
-	str r5, [fp, #-8]
+	str r6, [fp, #-8]
 	b .L75
 .L75:
 	b .L57
 .L76:
 	ldr r4, [fp, #-8]
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	ldr r5, =5
-	ldr r7, =0
-	sub r6, r7, r5
-	ldr r5, =0
-	cmp r6, r5
+	ldr r6, =0
+	sub r7, r6, r5
+	cmp r7, #0
 	movgt r5, #1
 	movle r5, #0
-	cmp r4, r6
+	cmp r4, r7
+	moveq r4, #1
+	movne r4, #0
 	beq .L73
 	b .L94
 .L78:
@@ -253,8 +247,7 @@ main:
 .L118:
 	bl ifElseIf
 	mov r4, r0
-	ldr r5, =0
-	cmp r4, r5
+	cmp r4, #0
 	movgt r5, #1
 	movle r5, #0
 	mov r0, r4
