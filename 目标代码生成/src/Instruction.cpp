@@ -767,4 +767,51 @@ void ConverInstruction::genMachineCode(AsmBuilder* builder)
 void CallInstruction::genMachineCode(AsmBuilder* builder)
 {
     // TODO
+    auto cur_block = builder->getBlock();
+    MachineOperand* operand;  
+    MachineInstruction* cur_inst;
+    int index = 0;
+    long unsigned int i = 1;
+    while(i != operands.size()) 
+    {
+        if (index == 4)
+        {
+            break;
+        }
+        if (genMachineOperand(operands[index+1])->isImm()) 
+        {
+            cur_block->InsertInst(new LoadMInstruction(cur_block, genMachineReg(index), genMachineOperand(operands[index+1])));
+        } 
+        else
+        {
+            cur_block->InsertInst(new MovMInstruction(cur_block, MovMInstruction::MOV, genMachineReg(index), genMachineOperand(operands[index+1])));
+        }
+        index++;
+        i++;
+    }
+    for (int i = operands.size() - 1; i > 4; i--) 
+    {
+        operand = genMachineOperand(operands[i]);
+        if (operand->isImm()) 
+        {
+            cur_inst = new LoadMInstruction(cur_block, genMachineVReg(), operand);
+            cur_block->InsertInst(cur_inst);
+            operand = genMachineVReg();
+        }
+        std::vector<MachineOperand*> temp;
+        cur_block->InsertInst(new StackMInstrcuton(cur_block, StackMInstrcuton::PUSH, temp, operand));
+    }
+    cur_inst = new BranchMInstruction(cur_block, BranchMInstruction::BL, new MachineOperand(func->toStr().c_str()));
+    cur_block->InsertInst(cur_inst);
+    if (operands.size() > 5) 
+    {
+        MachineOperand *sp = new MachineOperand(MachineOperand::REG, 13);
+        cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::ADD,sp, sp, genMachineImm((operands.size() - 5) * 4));
+        cur_block->InsertInst(cur_inst);
+    }
+    if (dst) 
+    {
+        cur_inst = new MovMInstruction(cur_block, MovMInstruction::MOV, genMachineOperand(dst), new MachineOperand(MachineOperand::REG, 0));
+        cur_block->InsertInst(cur_inst);
+    }
 }

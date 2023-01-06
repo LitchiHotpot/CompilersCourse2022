@@ -1,0 +1,4 @@
+/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: /tmp/ccdn7L1q.o: in function `main':
+(.text+0xfc): undefined reference to `addr_putint'
+/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.text+0x1fc): undefined reference to `addr_putint'
+collect2: error: ld returned 1 exit status

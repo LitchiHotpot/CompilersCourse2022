@@ -65,8 +65,11 @@ main:
 	ldr r4, [fp, #-4]
 	ldr r5, =0
 	cmp r4, r5
-	movgt r4, #1
-	movle r4, #0
+	movgt r5, #1
+	movle r5, #0
+	mov r0, r4
+	bl addr_putint
+	mov r4, r0
 	ldr r4, [fp, #-8]
 	ldr r5, =0
 	cmp r4, r5
@@ -126,8 +129,11 @@ main:
 	ldr r4, [fp, #-4]
 	ldr r5, =0
 	cmp r4, r5
-	movgt r4, #1
-	movle r4, #0
+	movgt r5, #1
+	movle r5, #0
+	mov r0, r4
+	bl addr_putint
+	mov r4, r0
 	mov r0, #0
 	add sp, sp, #20
 	bx lr
