@@ -24,10 +24,8 @@ main:
 	ldr r5, [r4]
 	mov r0, r5
 	add sp, sp, #0
+	pop {r4, r5, fp, lr}
 	bx lr
-.L2:
-.L3:
-.L4:
 addr_a:
 	.word a
 addr_b:

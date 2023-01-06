@@ -77,6 +77,7 @@ private:
     enum {GLOBAL, PARAM, LOCAL};
     std::string name;
     int scope;
+    int paramNo;
     Operand *addr;  // The address of the identifier.
     // You can add any field you need here.
 
@@ -89,7 +90,10 @@ public:
     bool isLocal() const {return scope >= LOCAL;};
     int getScope() const {return scope;};
     void setAddr(Operand *addr) {this->addr = addr;};
+    int getParamNo() const { return paramNo; };
     Operand* getAddr() {return addr;};
+    void changeScope(){scope = PARAM;};
+    void setParamNo(int a) {paramNo=a;};
     // You can add any function you need here.
 };
 

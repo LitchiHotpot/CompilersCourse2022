@@ -41,53 +41,54 @@ main:
 	sub r6, r5, r4
 	mov r0, r6
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
-.L16:
 .L17:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L18:
 	b .L17
-.L20:
 .L21:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L22:
 	b .L21
-.L24:
 .L25:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L26:
 	b .L25
-.L28:
 .L29:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L30:
 	b .L29
-.L31:
 .L32:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L33:
 	b .L32
-.L34:
 .L35:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L36:
 	b .L35
-.L38:
 .L39:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L40:
 	b .L39

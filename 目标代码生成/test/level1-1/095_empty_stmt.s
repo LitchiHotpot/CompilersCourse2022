@@ -21,25 +21,26 @@ main:
 	add r5, r6, r4
 	mov r0, r5
 	add sp, sp, #4
+	pop {r4, r5, r6, fp, lr}
 	bx lr
-.L5:
 .L6:
 	mov r0, #0
 	add sp, sp, #4
+	pop {r4, r5, r6, fp, lr}
 	bx lr
 .L7:
 	b .L6
-.L9:
 .L10:
 	mov r0, #0
 	add sp, sp, #4
+	pop {r4, r5, r6, fp, lr}
 	bx lr
 .L11:
 	b .L10
-.L12:
 .L13:
 	mov r0, #0
 	add sp, sp, #4
+	pop {r4, r5, r6, fp, lr}
 	bx lr
 .L14:
 	b .L13

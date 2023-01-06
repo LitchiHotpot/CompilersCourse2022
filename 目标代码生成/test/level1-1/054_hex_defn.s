@@ -17,11 +17,12 @@ main:
 	movle r5, #0
 	mov r0, r4
 	add sp, sp, #4
+	pop {r4, r5, fp, lr}
 	bx lr
-.L4:
 .L5:
 	mov r0, #0
 	add sp, sp, #4
+	pop {r4, r5, fp, lr}
 	bx lr
 .L6:
 	b .L5

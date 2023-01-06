@@ -15,7 +15,5 @@ main:
 	ldr r4, [fp, #-4]
 	mov r0, r4
 	add sp, sp, #8
+	pop {r4, fp, lr}
 	bx lr
-.L4:
-.L5:
-.L6:

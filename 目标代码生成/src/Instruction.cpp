@@ -420,7 +420,7 @@ CallInstruction::CallInstruction(Operand* dst,
 
 
 CallInstruction::~CallInstruction() {
-     operands[0]->setDef(nullptr);
+    operands[0]->setDef(nullptr);
     if (operands[0]->usersNum() == 0)
         delete operands[0];
     //operands[1]->removeUse(this);
@@ -450,21 +450,30 @@ MachineOperand* Instruction::genMachineOperand(Operand* ope)
 {
     auto se = ope->getEntry();
     MachineOperand* mope = nullptr;
-    if(se->isConstant())
+    if (se->isConstant())
         mope = new MachineOperand(MachineOperand::IMM, dynamic_cast<ConstantSymbolEntry*>(se)->getValue());
-    else if(se->isTemporary())
+    else if (se->isTemporary())
         mope = new MachineOperand(MachineOperand::VREG, dynamic_cast<TemporarySymbolEntry*>(se)->getLabel());
-    else if(se->isVariable())
+    else if (se->isVariable()) 
     {
         auto id_se = dynamic_cast<IdentifierSymbolEntry*>(se);
-        if(id_se->isGlobal())
+        if (id_se->isGlobal())
             mope = new MachineOperand(id_se->toStr().c_str());
-        else
-            exit(0);
+        else if (id_se -> isParam()) 
+        {
+            if (id_se -> getParamNo() < 4)
+            {
+                int temp = id_se -> getParamNo();
+                mope = new MachineOperand(MachineOperand::REG, temp);
+            }
+            else
+            {
+                mope = new MachineOperand(MachineOperand::REG, 3);
+            }
+        }
     }
     return mope;
 }
-
 MachineOperand* Instruction::genMachineReg(int reg) 
 {
     return new MachineOperand(MachineOperand::REG, reg);
@@ -545,36 +554,21 @@ void StoreInstruction::genMachineCode(AsmBuilder* builder)
     // TODO
     auto cur_block = builder->getBlock();
     MachineInstruction* cur_inst = nullptr;
-    MachineOperand* dst = nullptr;
-    MachineOperand* src = nullptr;
-    
-    dst = genMachineOperand(operands[0]);
-    src = genMachineOperand(operands[1]);
-
+    MachineOperand* dst = genMachineOperand(operands[0]);
+    MachineOperand* src = genMachineOperand(operands[1]);
     auto t = dynamic_cast<IdentifierSymbolEntry*>(operands[0]->getEntry());
-    
-    if(operands[1]->getEntry()->isConstant()){
-        auto dst1 = genMachineVReg();
-        cur_inst = new LoadMInstruction(cur_block, dst1, src);
+    if (operands[1]->getEntry()->isConstant()) 
+    {
+        MachineOperand* temp = genMachineVReg();
+        cur_inst = new LoadMInstruction(cur_block, temp, src);
         cur_block->InsertInst(cur_inst);
-        // src = dst1;
-        src = new MachineOperand(*dst1);
+        src = new MachineOperand(*temp);
     }
-
-    if(operands[0]->getEntry()->isTemporary() && operands[0]->getDef() &&
-        operands[0]->getDef()->isAlloc()){
-        auto src1 = genMachineReg(11);
-        int off = dynamic_cast<TemporarySymbolEntry*>(operands[0]->getEntry())
-                      ->getOffset();
-        auto src2 = genMachineImm(off);
-        if (off > 255 || off < -255) {
-            auto operand = genMachineVReg();
-            cur_block->InsertInst((new LoadMInstruction(
-                cur_block, operand, src2)));
-            src2 = operand;
-        }
-        cur_inst = new StoreMInstruction(cur_block, src, src1, src2);
-        cur_block->InsertInst(cur_inst);
+    if (operands[0]->getEntry()->isTemporary() && operands[0] -> getDef() && operands[0]->getDef()->isAlloc()) 
+    {
+        MachineOperand* temp = genMachineReg(11);
+        cur_inst = new StoreMInstruction(cur_block, src, temp, genMachineImm(dynamic_cast<TemporarySymbolEntry*>(operands[0] -> getEntry())->getOffset()));
+        cur_block -> InsertInst(cur_inst);
     }
     else if (operands[0]->getEntry()->isVariable() && t -> isGlobal()) 
     {
@@ -607,7 +601,8 @@ void CmpInstruction::genMachineCode(AsmBuilder* builder)
         cur_block->InsertInst(cur_inst);
         src2 = new MachineOperand(*temp_reg);
     }
-    cur_block->InsertInst(new CmpMInstruction(cur_block, src1, src2, opcode));
+    cur_inst = new CmpMInstruction(cur_block, src1, src2, opcode);
+    cur_block->InsertInst(cur_inst);
     if (opcode >= 2 && opcode <= 5) 
     {
         cur_block->InsertInst(new MovMInstruction(cur_block, MovMInstruction::MOV, genMachineOperand(operands[0]), genMachineImm(1), opcode));
@@ -738,17 +733,18 @@ void SingleInstruction::genMachineCode(AsmBuilder* builder)
     }
 
     auto temp_reg = genMachineVReg();
+    auto temp_r = new MachineOperand(*temp_reg);
     MachineOperand *ZERO = new MachineOperand(MachineOperand::IMM,0);
     switch (opcode)
     {
     case MIN:
-        cur_inst = new LoadMInstruction(cur_block, temp_reg, ZERO);
+        cur_inst = new LoadMInstruction(cur_block, temp_r, ZERO);
         cur_block->InsertInst(cur_inst);
         cur_inst = new SingleMInstruction(cur_block, SingleMInstruction::MIN, dst, src, temp_reg);
         break;
     case NOT:
-        std::cout<<"NOT"<<std::endl;
-        cur_inst = new LoadMInstruction(cur_block, temp_reg, ZERO);
+        //std::cout<<"NOT"<<std::endl;
+        cur_inst = new LoadMInstruction(cur_block, temp_r, ZERO);
         // cur_inst=new CmpMInstruction(cur_block,src,temp_reg,0);
         break;
     case POS:
@@ -762,6 +758,12 @@ void SingleInstruction::genMachineCode(AsmBuilder* builder)
 void ConverInstruction::genMachineCode(AsmBuilder* builder)
 {
     // TODO
+    auto cur_block = builder->getBlock();
+    auto dst = genMachineOperand(operands[0]);
+    auto src = genMachineOperand(operands[1]);
+    //std::cout<<src->isVReg()<<std::endl;
+    auto cur_inst =new MovMInstruction(cur_block, MovMInstruction::MOV, dst, src);
+    cur_block->InsertInst(cur_inst);
 }
 
 void CallInstruction::genMachineCode(AsmBuilder* builder)
@@ -789,12 +791,13 @@ void CallInstruction::genMachineCode(AsmBuilder* builder)
         index++;
         i++;
     }
-    for (int i = operands.size() - 1; i > 4; i--) 
+    for (int i = operands.size() - 1; i >= 5; i--) 
     {
         operand = genMachineOperand(operands[i]);
         if (operand->isImm()) 
         {
-            cur_inst = new LoadMInstruction(cur_block, genMachineVReg(), operand);
+            auto temp_reg = genMachineVReg();
+            cur_inst = new LoadMInstruction(cur_block, temp_reg, operand);
             cur_block->InsertInst(cur_inst);
             operand = genMachineVReg();
         }
@@ -805,13 +808,15 @@ void CallInstruction::genMachineCode(AsmBuilder* builder)
     cur_block->InsertInst(cur_inst);
     if (operands.size() > 5) 
     {
-        MachineOperand *sp = new MachineOperand(MachineOperand::REG, 13);
+        auto sp = genMachineReg(13); 
         cur_inst = new BinaryMInstruction(cur_block, BinaryMInstruction::ADD,sp, sp, genMachineImm((operands.size() - 5) * 4));
         cur_block->InsertInst(cur_inst);
     }
     if (dst) 
     {
-        cur_inst = new MovMInstruction(cur_block, MovMInstruction::MOV, genMachineOperand(dst), new MachineOperand(MachineOperand::REG, 0));
+        cur_inst = new MovMInstruction(cur_block, MovMInstruction::MOV, genMachineOperand(dst), genMachineReg(0));
         cur_block->InsertInst(cur_inst);
     }
+
+
 }

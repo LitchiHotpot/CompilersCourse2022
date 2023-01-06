@@ -78,6 +78,9 @@ public:
     std::vector<MachineOperand*>& getUse() {return use_list;};
     void insertBefore(MachineInstruction*);
     void insertAfter(MachineInstruction*);
+    bool isBX() const { return type == BRANCH && op == 2; };
+    bool isStore() const { return type == STORE; };
+    bool isAdd() const { return type == BINARY && op == 0; };
 };
 
 class BinaryMInstruction : public MachineInstruction
@@ -161,11 +164,12 @@ class MachineBlock
 private:
     MachineFunction* parent;
     int no;  
+    int cmpno;
     std::vector<MachineBlock *> pred, succ;
     std::vector<MachineInstruction*> inst_list;
     std::set<MachineOperand*> live_in;
     std::set<MachineOperand*> live_out;
-    int cmpno;
+
 
 public:
     std::vector<MachineInstruction*>& getInsts() {return inst_list;};
@@ -182,7 +186,7 @@ public:
     std::vector<MachineBlock*>& getPreds() {return pred;};
     std::vector<MachineBlock*>& getSuccs() {return succ;};
     int getCmpNo() const { return cmpno; };
-    void setCmpNo(int cond) { cmpno = cond; };
+    void setCmpNo(int cond) { this->cmpno = cond; };
     void output();
 };
 
@@ -194,12 +198,14 @@ private:
     int stack_size;
     std::set<int> saved_regs;
     SymbolEntry* sym_ptr;
+    int paramsNum;
 public:
     std::vector<MachineBlock*>& getBlocks() {return block_list;};
     std::vector<MachineBlock*>::iterator begin() { return block_list.begin(); };
     std::vector<MachineBlock*>::iterator end() { return block_list.end(); };
     MachineFunction(MachineUnit* p, SymbolEntry* sym_ptr);
     std::vector<MachineOperand*> getSavedRegs();
+    int getParaNum(){return paramsNum;};
     /* HINT:
     * Alloc stack space for local variable;
     * return current frame offset ;

@@ -41,53 +41,54 @@ main:
 	mul r4, r6, r7
 	mov r0, r4
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
-.L16:
 .L17:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L18:
 	b .L17
-.L20:
 .L21:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L22:
 	b .L21
-.L24:
 .L25:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L26:
 	b .L25
-.L27:
 .L28:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L29:
 	b .L28
-.L31:
 .L32:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L33:
 	b .L32
-.L35:
 .L36:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L37:
 	b .L36
-.L38:
 .L39:
 	mov r0, #0
 	add sp, sp, #16
+	pop {r4, r5, r6, r7, fp, lr}
 	bx lr
 .L40:
 	b .L39

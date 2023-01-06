@@ -74,6 +74,8 @@ void FunctionDef::genCode()
             Operand *addr;
             SymbolEntry *addr_se;
             Type* type;
+            se_pa->changeScope();
+            se_pa->setParamNo(i);
             type = new PointerType(para_type[i]);
             //std::cout<<para_type[i]->toStr<<std::endl;
             addr_se = new TemporarySymbolEntry(type, SymbolTable::getLabel());
@@ -81,7 +83,7 @@ void FunctionDef::genCode()
             alloca = new AllocaInstruction(addr, se_pa);
             Operand *temp1 = new Operand(se_pa); 
             Operand *temp = new Operand(func->gettemplist()[i]);
-            store=new StoreInstruction(addr, temp, entry);                  
+            store=new StoreInstruction(addr, temp1, entry);                  
             //entry->insertFront(store);    
             entry->insertFront(alloca);                              
             se_pa->setAddr(addr);              
@@ -280,6 +282,10 @@ void BinaryExpr::genCode()
 
         true_list.push_back(new CondBrInstruction(truebb, tempbb, dst, bb));
         false_list.push_back(new UncondBrInstruction(falsebb, tempbb));
+        /*Operand* temp3 = new Operand(new TemporarySymbolEntry(
+            TypeSystem::intType, SymbolTable::getLabel()));
+            new ConverInstruction(1,temp3,dst,bb);
+        dst=temp3;*/
     }
 }
 

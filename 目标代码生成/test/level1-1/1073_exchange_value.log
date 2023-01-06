@@ -1,8 +1,1 @@
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: /tmp/ccgzPOnD.o: in function `main':
-(.data+0x10): undefined reference to `addr_getint'
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.data+0x2c): undefined reference to `addr_getint'
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.data+0xa8): undefined reference to `addr_putint'
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.data+0xd0): undefined reference to `addr_putch'
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.data+0xf0): undefined reference to `addr_putint'
-/usr/lib/gcc-cross/arm-linux-gnueabihf/11/../../../../arm-linux-gnueabihf/bin/ld: (.data+0x118): undefined reference to `addr_putch'
-collect2: error: ld returned 1 exit status
+TOTAL: 0H-0M-0S-0us

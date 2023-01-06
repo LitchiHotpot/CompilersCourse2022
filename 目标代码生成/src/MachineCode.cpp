@@ -86,6 +86,8 @@ void MachineOperand::output()
     case LABEL:
         if (this->label.substr(0, 2) == ".L")
             fprintf(yyout, "%s", this->label.c_str());
+        else if(this->label.substr(0, 1) == "@")
+            fprintf(yyout, "%s", this->label.c_str() + 1);
         else
             fprintf(yyout, "addr_%s", this->label.c_str());
     default:
@@ -473,18 +475,60 @@ MachineFunction::MachineFunction(MachineUnit* p, SymbolEntry* sym_ptr)
     this->parent = p; 
     this->sym_ptr = sym_ptr; 
     this->stack_size = 0;
+    this->paramsNum = ((FunctionType*)(sym_ptr->getType()))->getParaType().size();
 };
 
 void MachineBlock::output()
 {
-    fprintf(yyout, ".L%d:\n", this->no);
-    for(auto iter : inst_list)
-        iter->output();
+    int offset = (parent->getSavedRegs().size() + 2) * 4;
+    int num = parent->getParaNum();
+    int count = 0;
+    if (!inst_list.empty()) 
+    {
+        fprintf(yyout, ".L%d:\n", this->no);
+        for (long unsigned int i = 0; i < inst_list.size(); i++) 
+        {
+            if (num > 4 && (inst_list[i])->isStore()) 
+            {
+                MachineOperand* operand = (inst_list[i])->getUse()[0];
+                if (operand->isReg() && operand->getReg() == 0) 
+                {
+                    if (count != 0) 
+                    {
+                        count++;
+                    } 
+                    else 
+                    {
+                        offset += 4;
+                        LoadMInstruction *cur_inst = new LoadMInstruction(this, new MachineOperand(MachineOperand::REG, 0), new MachineOperand(MachineOperand::REG, 11), new MachineOperand(MachineOperand::IMM, offset));
+                        cur_inst->output();
+                    }
+                }
+            }
+            if ((inst_list[i])->isBX()) 
+            {
+                auto cur_inst = new StackMInstrcuton(this, StackMInstrcuton::POP, parent->getSavedRegs(), new MachineOperand(MachineOperand::REG, 11), new MachineOperand(MachineOperand::REG, 14));
+                cur_inst->output();
+            }
+            /*if ((inst_list[i])->isAdd()) 
+            {
+                auto dst = inst_list[i]->getDef()[0];
+                auto src1 = inst_list[i]->getUse()[0];
+                if (dst->isReg() && dst->getReg() == 13 && src1->isReg() && src1->getReg() == 13 && (inst_list[i + 1])->isBX()) 
+                {
+                    int size = parent->AllocSpace(0);
+                    (inst_list[i])->getUse()[1]->setVal(size);
+                }
+            }*/
+            (inst_list[i])->output();
+        }
+    }
+    
 }
 
 void MachineFunction::output()
 {
-    const char *func_name = this->sym_ptr->toStr().c_str();
+    const char *func_name = this->sym_ptr->toStr().c_str() + 1;
     fprintf(yyout, "\t.global %s\n", func_name);
     fprintf(yyout, "\t.type %s , %%function\n", func_name);
     fprintf(yyout, "%s:\n", func_name);
@@ -520,7 +564,7 @@ std::vector<MachineOperand*> MachineFunction::getSavedRegs()
     }
     return regs;
 }
-
+    
 void MachineUnit::PrintGlobalDecl()
 {
     // TODO:

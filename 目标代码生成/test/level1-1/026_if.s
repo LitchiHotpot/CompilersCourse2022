@@ -32,21 +32,21 @@ main:
 .L4:
 	mov r0, #1
 	add sp, sp, #0
+	pop {r4, r5, fp, lr}
 	bx lr
 	b .L5
 .L5:
 	mov r0, #0
 	add sp, sp, #0
+	pop {r4, r5, fp, lr}
 	bx lr
-.L6:
 .L7:
 	mov r0, #0
 	add sp, sp, #0
+	pop {r4, r5, fp, lr}
 	bx lr
 .L8:
 	b .L7
-.L10:
-.L11:
 .L12:
 	b .L5
 addr_a:
