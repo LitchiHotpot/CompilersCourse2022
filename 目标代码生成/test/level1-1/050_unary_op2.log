@@ -1,2 +1,3 @@
-test/level1-1/050_unary_op2.s: Assembler messages:
-test/level1-1/050_unary_op2.s:64: Error: ARM register expected -- `str v18,[fp,#-8]'
+corrupted size vs. prev_size
+timeout: the monitored command dumped core
+Aborted

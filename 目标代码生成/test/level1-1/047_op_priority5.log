@@ -1,18 +1,3 @@
-test/level1-1/047_op_priority5.s: Assembler messages:
-test/level1-1/047_op_priority5.s:13: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:15: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:18: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:21: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:23: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:37: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:39: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:41: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:45: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:47: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:49: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:54: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:56: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:58: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:62: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:65: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/047_op_priority5.s:67: Error: internal_relocation (type: OFFSET_IMM) not fixed up
+corrupted size vs. prev_size
+timeout: the monitored command dumped core
+Aborted

@@ -1,2 +1,0 @@
-test/level1-1/023_divc.s: Assembler messages:
-test/level1-1/023_divc.s:13: Error: garbage following instruction -- `sdiv r0,r0,#5'

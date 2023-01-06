@@ -8,6 +8,7 @@
 #include <queue>
 
 extern Unit unit;
+extern MachineUnit mUnit;
 extern FILE *yyout;
 int Node::counter = 0;
 IRBuilder* Node::builder = nullptr;
@@ -396,6 +397,7 @@ void DeclStmt::genCode()
             addr = new Operand(addr_se);
             se->setAddr(addr);
             unit.insertGlo(se,nullptr);
+            mUnit.insertGlobal(se,nullptr);
             idlist_u->popone();
         }
         else if(se->isLocal())
@@ -581,6 +583,7 @@ void InitStmt::genCode()
             //Operand *src_nu = nu->getOperand();
             //std::cout<<src_nu->toStr()<<std::endl;
             unit.insertGlo(se,nu);
+            mUnit.insertGlobal(se,nu);
             initIDList->poponese();
             initIDList->poponenu();
         }

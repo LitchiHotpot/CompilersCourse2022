@@ -1,20 +1,32 @@
 	.arch armv8-a
 	.arch_extension crc
 	.arm
+.data
+
+.section .rodata
+
+.global a
+.size a, 4
+a:
+	.word 10
 	.global main
 	.type main , %function
 main:
-	push {r0, fp, lr}
+	push {r4, r5, r6, fp, lr}
 	mov fp, sp
 	sub sp, sp, #4
 .L4:
-	ldr r0, =2
-	str r0, [fp, #-4]
-	ldr r0, [fp, #-4]
-	ldr r0, addr_@a
-	ldr r0, [r0]
-	sub r0, r0, r0
-	mov r0, r0
+	ldr r4, =2
+	str r4, [fp, #-4]
+	ldr r4, [fp, #-4]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r5, #1
+	movle r5, #0
+	ldr r5, addr_a
+	ldr r6, [r5]
+	sub r5, r4, r6
+	mov r0, r5
 	add sp, sp, #4
 	bx lr
 .L6:
@@ -34,3 +46,5 @@ main:
 	bx lr
 .L15:
 	b .L14
+addr_a:
+	.word a

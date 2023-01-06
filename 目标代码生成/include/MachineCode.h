@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <fstream>
 #include "SymbolTable.h"
+#include "Ast.h"
 
 /* Hint:
 * MachineUnit: Compiler unit
@@ -66,7 +67,7 @@ protected:
     void addUse(MachineOperand* ope) { use_list.push_back(ope); };
     // Print execution code after printing opcode
     void PrintCond();
-    enum instType { BINARY, LOAD, STORE, MOV, BRANCH, CMP, STACK };
+    enum instType { SINGLE,BINARY, LOAD, STORE, MOV, BRANCH, CMP, STACK };
 public:
     enum condType { EQ, NE, LT, LE , GT, GE, NONE };
     virtual void output() = 0;
@@ -89,6 +90,15 @@ public:
     void output();
 };
 
+class SingleMInstruction : public MachineInstruction
+{
+public:
+    enum opType {MIN,NOT,POS};
+    SingleMInstruction(MachineBlock* p, int op, 
+                    MachineOperand* dst, MachineOperand* src,MachineOperand* temp,
+                    int cond = MachineInstruction::NONE);
+    void output();
+};
 
 class LoadMInstruction : public MachineInstruction
 {
@@ -155,6 +165,8 @@ private:
     std::vector<MachineInstruction*> inst_list;
     std::set<MachineOperand*> live_in;
     std::set<MachineOperand*> live_out;
+    int cmpno;
+
 public:
     std::vector<MachineInstruction*>& getInsts() {return inst_list;};
     std::vector<MachineInstruction*>::iterator begin() { return inst_list.begin(); };
@@ -169,6 +181,8 @@ public:
     std::set<MachineOperand*>& getLiveOut() {return live_out;};
     std::vector<MachineBlock*>& getPreds() {return pred;};
     std::vector<MachineBlock*>& getSuccs() {return succ;};
+    int getCmpNo() const { return cmpno; };
+    void setCmpNo(int cond) { cmpno = cond; };
     void output();
 };
 
@@ -202,12 +216,18 @@ class MachineUnit
 private:
     std::vector<MachineFunction*> func_list;
     void PrintGlobalDecl();
+    int gnumber;   //全局变量个数
+    std::vector<SymbolEntry*> global_list;
+    std::vector<ExprNode *> glonum_list;
 public:
     std::vector<MachineFunction*>& getFuncs() {return func_list;};
     std::vector<MachineFunction*>::iterator begin() { return func_list.begin(); };
     std::vector<MachineFunction*>::iterator end() { return func_list.end(); };
     void InsertFunc(MachineFunction* func) { func_list.push_back(func);};
     void output();
+    void insertGlobal(SymbolEntry*, ExprNode*);
+    void printGlobal();
+    int getGnumber() const { return gnumber; };
 };
 
 #endif

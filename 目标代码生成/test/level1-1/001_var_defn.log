@@ -1,3 +1,0 @@
-test/level1-1/001_var_defn.s: Assembler messages:
-test/level1-1/001_var_defn.s:11: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/001_var_defn.s:13: Error: internal_relocation (type: OFFSET_IMM) not fixed up

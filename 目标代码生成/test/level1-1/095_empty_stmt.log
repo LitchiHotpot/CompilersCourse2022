@@ -1,2 +1,0 @@
-test/level1-1/095_empty_stmt.s: Assembler messages:
-test/level1-1/095_empty_stmt.s:14: Error: ARM register expected -- `mul r0,r0,#2'

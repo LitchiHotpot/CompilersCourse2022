@@ -96,12 +96,61 @@ void MachineOperand::output()
 void MachineInstruction::PrintCond()
 {
     // TODO
-    switch (cond)
+    switch (cond) {
+        case EQ:
+            fprintf(yyout, "eq");
+            break;
+        case NE:
+            fprintf(yyout, "ne");
+            break;
+        case LT:
+            fprintf(yyout, "lt");
+            break;
+        case LE:
+            fprintf(yyout, "le");
+            break;
+        case GT:
+            fprintf(yyout, "gt");
+            break;
+        case GE:
+            fprintf(yyout, "ge");
+            break;
+        default:
+            break;
+    }
+}
+
+SingleMInstruction::SingleMInstruction(
+    MachineBlock* p, int op, 
+    MachineOperand* dst, MachineOperand* src, MachineOperand* temp,
+    int cond)
+{
+    this->parent = p;
+    this->type = MachineInstruction::SINGLE;
+    this->op = op;
+    this->cond = cond;
+    this->def_list.push_back(dst);
+    this->use_list.push_back(temp);
+    this->use_list.push_back(src);
+    dst->setParent(this);
+    src->setParent(this);
+    temp->setParent(this);
+
+}
+
+void SingleMInstruction::output(){
+    switch (this->op)
     {
-    case LT:
-        fprintf(yyout, "lt");
-        break;
-    default:
+    case SingleMInstruction::MIN:
+        //std::cout<<"MIN"<<std::endl;
+        fprintf(yyout, "\tsub ");
+        this->PrintCond();
+        this->def_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[0]->output();
+        fprintf(yyout, ", ");
+        this->use_list[1]->output();
+        fprintf(yyout, "\n");
         break;
     }
 }
@@ -351,6 +400,15 @@ CmpMInstruction::CmpMInstruction(MachineBlock* p,
     int cond)
 {
     // TODO
+    this->parent = p;
+    this->type = MachineInstruction::CMP;
+    this->op = -1;
+    this->cond = cond;
+    p->setCmpNo(cond);
+    this->use_list.push_back(src1);
+    this->use_list.push_back(src2);
+    src1->setParent(this);
+    src2->setParent(this);
 }
 
 void CmpMInstruction::output()
@@ -358,6 +416,11 @@ void CmpMInstruction::output()
     // TODO
     // Jsut for reg alloca test
     // delete it after test
+    fprintf(yyout, "\tcmp ");
+    this->use_list[0]->output();
+    fprintf(yyout, ", ");
+    this->use_list[1]->output();
+    fprintf(yyout, "\n");
 }
 
 StackMInstrcuton::StackMInstrcuton(MachineBlock* p, int op, std::vector<MachineOperand*> srcs, MachineOperand* src, MachineOperand* src1, int cond) 
@@ -421,7 +484,7 @@ void MachineBlock::output()
 
 void MachineFunction::output()
 {
-    const char *func_name = this->sym_ptr->toStr().c_str() + 1;
+    const char *func_name = this->sym_ptr->toStr().c_str();
     fprintf(yyout, "\t.global %s\n", func_name);
     fprintf(yyout, "\t.type %s , %%function\n", func_name);
     fprintf(yyout, "%s:\n", func_name);
@@ -462,7 +525,71 @@ void MachineUnit::PrintGlobalDecl()
 {
     // TODO:
     // You need to print global variable/const declarition code;
+    std::vector<int> constIdx;
+    if (!global_list.empty())           //打印全局变量列表
+        fprintf(yyout, ".data\n\n");
+    for (long unsigned int i = 0; i < global_list.size(); i++) 
+    {
+        IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)global_list[i];
+        ExprNode* nu = (ExprNode*)glonum_list[i];
+        if(nu!=nullptr){
+            ConstantSymbolEntry* con=(ConstantSymbolEntry*)nu->getSymPtr();
+            if (se->getType()==TypeSystem::constintType) 
+            {
+                constIdx.push_back(i);
+            }  
+            else if(se->getType()==TypeSystem::intType)
+            {
+                fprintf(yyout, ".global %s\n", se->toStr().c_str());
+                fprintf(yyout, ".size %s, %d\n", se->toStr().c_str(), 4);
+                fprintf(yyout, "%s:\n", se->toStr().c_str());
+                fprintf(yyout, "\t.word %d\n", con->getValue());
+            }
+        }
+        else{
+            fprintf(yyout, ".global %s\n", se->toStr().c_str());
+            fprintf(yyout, ".size %s, %d\n", se->toStr().c_str(), 4);
+            fprintf(yyout, "%s:\n", se->toStr().c_str());
+            fprintf(yyout, "\t.word 0\n");
+        }
+    }
+    if (!constIdx.empty()) 
+    {        //打印常量列表
+        fprintf(yyout, ".section .rodata\n\n");
+        for (long unsigned int i = 0; i < constIdx.size(); i++) 
+        {
+            IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)global_list[constIdx[i]];
+            ExprNode* nu = (ExprNode*)glonum_list[constIdx[i]];
+            ConstantSymbolEntry* con=(ConstantSymbolEntry*)nu->getSymPtr();
+            fprintf(yyout, ".global %s\n", se->toStr().c_str());
+            if(se->getType()==TypeSystem::constintType)
+                fprintf(yyout, ".size %s, %d\n", se->toStr().c_str(), 4);
+            if(nu){
+                fprintf(yyout, "%s:\n", se->toStr().c_str());
+                fprintf(yyout, "\t.word %d\n", con->getValue());
+            }
+        }
+    }
+
 }
+
+
+void MachineUnit::insertGlobal(SymbolEntry* se, ExprNode* nu) 
+{
+    global_list.push_back(se);
+    glonum_list.push_back(nu);
+}
+
+void MachineUnit::printGlobal()
+{
+    for (auto s : global_list) {
+        IdentifierSymbolEntry* se = (IdentifierSymbolEntry*)s;
+        fprintf(yyout, "addr_%s:\n", se->toStr().c_str());
+        fprintf(yyout, "\t.word %s\n", se->toStr().c_str());
+    }
+    gnumber++;
+}
+
 
 void MachineUnit::output()
 {
@@ -479,6 +606,7 @@ void MachineUnit::output()
     for(auto iter : func_list){
         iter->output();
     }
+    printGlobal();
 }
 
 

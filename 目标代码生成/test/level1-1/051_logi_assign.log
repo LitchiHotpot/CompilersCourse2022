@@ -1,6 +1,3 @@
-test/level1-1/051_logi_assign.s: Assembler messages:
-test/level1-1/051_logi_assign.s:11: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/051_logi_assign.s:13: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/051_logi_assign.s:15: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/051_logi_assign.s:17: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/051_logi_assign.s:47: Error: internal_relocation (type: OFFSET_IMM) not fixed up
+corrupted size vs. prev_size
+timeout: the monitored command dumped core
+Aborted

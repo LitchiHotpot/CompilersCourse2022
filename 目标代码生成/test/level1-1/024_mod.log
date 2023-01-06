@@ -1,2 +1,0 @@
-test/level1-1/024_mod.s: Assembler messages:
-test/level1-1/024_mod.s:14: Error: garbage following instruction -- `sdiv r0,r0,#3'

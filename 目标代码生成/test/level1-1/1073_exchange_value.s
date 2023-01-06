@@ -1,29 +1,71 @@
 	.arch armv8-a
 	.arch_extension crc
 	.arm
+.data
+
+.global n
+.size n, 4
+n:
+	.word 0
 	.global main
 	.type main , %function
 main:
-	push {r0, fp, lr}
+	push {r4, r5, fp, lr}
 	mov fp, sp
 	sub sp, sp, #12
 .L20:
+	ldr r4, =0
+	cmp v1, r4
+	movgt r4, #1
+	movle r4, #0
 	str v1, [fp, #-12]
+	ldr r4, =0
+	cmp v3, r4
+	movgt r4, #1
+	movle r4, #0
 	str v3, [fp, #-8]
-	ldr r0, [fp, #-12]
-	str r0, [fp, #-4]
-	ldr r0, [fp, #-8]
-	str r0, [fp, #-12]
-	ldr r0, [fp, #-4]
-	str r0, [fp, #-8]
-	ldr r0, [fp, #-12]
-	ldr r0, =10
-	str r0, [fp, #-4]
-	ldr r0, [fp, #-4]
-	ldr r0, [fp, #-8]
-	ldr r0, =10
-	str r0, [fp, #-4]
-	ldr r0, [fp, #-4]
+	ldr r4, [fp, #-12]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r5, #1
+	movle r5, #0
+	str r4, [fp, #-4]
+	ldr r4, [fp, #-8]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r5, #1
+	movle r5, #0
+	str r4, [fp, #-12]
+	ldr r4, [fp, #-4]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r5, #1
+	movle r5, #0
+	str r4, [fp, #-8]
+	ldr r4, [fp, #-12]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r4, #1
+	movle r4, #0
+	ldr r4, =10
+	str r4, [fp, #-4]
+	ldr r4, [fp, #-4]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r4, #1
+	movle r4, #0
+	ldr r4, [fp, #-8]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r4, #1
+	movle r4, #0
+	ldr r4, =10
+	str r4, [fp, #-4]
+	ldr r4, [fp, #-4]
+	ldr r5, =0
+	cmp r4, r5
+	movgt r4, #1
+	movle r4, #0
 	mov r0, #0
 	add sp, sp, #12
 	bx lr
@@ -102,3 +144,5 @@ main:
 .L69:
 .L70:
 .L71:
+addr_n:
+	.word n

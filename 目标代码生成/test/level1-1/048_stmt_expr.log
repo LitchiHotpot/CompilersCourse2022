@@ -1,9 +1,3 @@
-test/level1-1/048_stmt_expr.s: Assembler messages:
-test/level1-1/048_stmt_expr.s:14: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:19: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:26: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:29: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:31: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:34: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:38: Error: internal_relocation (type: OFFSET_IMM) not fixed up
-test/level1-1/048_stmt_expr.s:40: Error: internal_relocation (type: OFFSET_IMM) not fixed up
+corrupted size vs. prev_size
+timeout: the monitored command dumped core
+Aborted
